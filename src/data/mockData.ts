@@ -1,4 +1,4 @@
-import { SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient } from '../types';
+import { SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient, DiseaseOutbreakZone } from '../types';
 
 export interface MaharashtraCityHub {
   id: string;
@@ -724,3 +724,343 @@ export const INITIAL_HIGH_RISK_PATIENTS: HighRiskPatient[] = [
     recommendedAction: 'Enroll in NRC (Nutrition Rehabilitation Center) + Ready-to-Use Therapeutic Food (RUTF).'
   }
 ];
+
+export const INITIAL_DISEASE_OUTBREAK_ZONES: DiseaseOutbreakZone[] = [
+  {
+    id: 'OUTBREAK-PUN-01',
+    ruralAreaName: 'Mulshi Rural Basin (Paud & 14 Hamlets)',
+    blockName: 'Mulshi Block',
+    district: 'Pune District',
+    cityHub: 'pune',
+    coordinates: { lat: 18.5314, lng: 73.6140 },
+    populationAtRisk: 48500,
+    
+    diseaseName: 'Dengue Hemorrhagic Fever & Thrombocytopenia',
+    diseaseCategory: 'Vector-Borne',
+    activeCasesCount: 42,
+    weeklyGrowthRatePercent: 68,
+    attackRatePerThousand: 5.4,
+    severityLevel: 'Critical Outbreak',
+    outbreakSource: 'Stagnant irrigation canal overflows, un-chlorinated construction tanks & rubber plantation water pockets.',
+    primarySymptoms: ['High biphasic fever (104°F)', 'Platelet count drop < 30,000/μL', 'Retro-orbital pain', 'Petechial mucosal bleeding'],
+    
+    requiredFacilityType: 'Blood Component Separation, Single Donor Platelet (SDAP) Storage & Pediatric ICU',
+    requiredEquipment: ['Apheresis Cell Separator', 'Continuous Platelet Agitator & Incubator', '5-Part Hematology Cell Counter', 'Central Oxygen Supply & Triage Beds'],
+    requiredSpecialist: 'Transfusion Medicine Consultant & Critical Care Intensivist',
+    requiredLifeSavingDrugs: ['Single Donor Platelet (SDAP) units', 'IV Normal Saline / Ringer Lactate in bulk', 'IV Paracetamol & Epinephrine'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Paud Rural Sub-Center (Basic PHC - 6 Beds)',
+    localFacilityCapacityStatus: 'Not Available / Critical Deficit',
+    deficitSummary: 'Paud PHC has NO blood storage, NO platelet component facility, and NO ICU monitor. Severely thrombocytopenic patients are in mortal danger during long transit.',
+    
+    nearestEquippedHospitalName: 'Sassoon General Hospital & BJ Medical College, Central Pune',
+    nearestHospitalCoordinates: { lat: 18.5284, lng: 73.8744 },
+    nearestHospitalDistanceKm: 46,
+    travelTransitTimeMinutes: 85,
+    transitRiskAssessment: 'Critical fatality hazard: 1.5+ hour ghat road transit over rugged terrain poses acute hemorrhagic collapse risk for shock-stage dengue patients.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Red - Urgent State Action',
+    governmentRecommendation: 'Immediate Government Requisition: 1) Deploy 108 Mobile Platelet Transport Vehicle from Pune District Blood Bank. 2) Sanction Emergency 10-bed Day Care Platelet Infusion Bay at Paud Rural Hospital under National Health Mission (NHM). 3) Authorize aerial larvicidal fogging across 14 Mulshi gram panchayats.',
+    sanctionBudgetEstimateINR: '₹34.50 Lakhs (Emergency Infrastructure & Mobile Apheresis Supply)',
+    affectedPanchayats: ['Paud', 'Pirangut', 'Kharawade', 'Male', 'Kolwan', 'Bhadas', 'Shirevali'],
+    reportedByAshaOrMo: 'Dr. Rajesh Sharma (PHC MO) & ASHA Vandana Shinde',
+    lastUpdated: 'Today, 11:30 AM'
+  },
+  {
+    id: 'OUTBREAK-PUN-02',
+    ruralAreaName: 'Otur Tribal Valley (Kukadi River Belt)',
+    blockName: 'Junnar Block',
+    district: 'Pune District',
+    cityHub: 'pune',
+    coordinates: { lat: 19.2558, lng: 73.9140 },
+    populationAtRisk: 36200,
+    
+    diseaseName: 'Acute Diarrheal Outbreak & Choleraic Gastroenteritis',
+    diseaseCategory: 'Water-Borne',
+    activeCasesCount: 31,
+    weeklyGrowthRatePercent: 54,
+    attackRatePerThousand: 4.8,
+    severityLevel: 'Critical Outbreak',
+    outbreakSource: 'Bacterial contamination of open canal water post-monsoon runoff; compromised public pipeline in tribal padas.',
+    primarySymptoms: ['Rice-water profuse diarrhea (10+ episodes/day)', 'Sunken eyes & severe skin pinch loss', 'Hypovolemic shock', 'Pediatric acidosis'],
+    
+    requiredFacilityType: 'Isolation Dehydration & Cholera Ward with Point-of-Care Water Microbiology Diagnostic Lab',
+    requiredEquipment: ['20-Bed Cholera Cot Isolation Unit', 'Rapid Cholera Ag Dipsticks & Water Coliform Testing Incubator', 'Pediatric Micro-Drip Infusion Sets', 'Autoclave Waste Sterilizer'],
+    requiredSpecialist: 'Epidemiologist & Pediatric Intensivist',
+    requiredLifeSavingDrugs: ['WHO-Formula ORS (5,000 sachets)', 'IV Ringer Lactate (1,200 bottles)', 'Pediatric Zinc Sulfate 20mg', 'Doxycycline 100mg / Azithromycin Suspension'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Otur Tribal Primary Health Unit (4 Beds)',
+    localFacilityCapacityStatus: 'Not Available / Critical Deficit',
+    deficitSummary: 'Otur PHC has only 4 general beds with zero isolation capability and no water testing microbiology lab. Waste contamination risks spreading to downstream villages.',
+    
+    nearestEquippedHospitalName: 'Narayangaon Sub-District Hospital (SDH)',
+    nearestHospitalCoordinates: { lat: 19.1245, lng: 73.9782 },
+    nearestHospitalDistanceKm: 34,
+    travelTransitTimeMinutes: 60,
+    transitRiskAssessment: 'High dehydration risk: Infants under 5 years develop hypovolemic shock within 2 hours without immediate continuous IV replacement.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Red - Urgent State Action',
+    governmentRecommendation: 'Urgent Cabinet/Zilla Parishad Action: 1) Deploy 2 Mobile Water Purification & Chlorination Tankers immediately. 2) Set up a 20-bed Temporary Field Isolation Unit at Otur ZP High School ground. 3) Supply 5,000 ORS sachets and IV fluid buffer from District Medical Warehouse.',
+    sanctionBudgetEstimateINR: '₹18.20 Lakhs (Field Isolation & Water Disinfection Deployment)',
+    affectedPanchayats: ['Otur', 'Khamundi', 'Udapur', 'Dumbarwadi', 'Alme'],
+    reportedByAshaOrMo: 'Dr. Anita Sundaram (Pediatrician) & ASHA Kavita Gaikwad',
+    lastUpdated: 'Today, 10:45 AM'
+  },
+  {
+    id: 'OUTBREAK-NSH-01',
+    ruralAreaName: 'Harsul-Trimbakeshwar Tribal Belt',
+    blockName: 'Trimbakeshwar Block',
+    district: 'Nashik District',
+    cityHub: 'nashik',
+    coordinates: { lat: 19.9383, lng: 73.5303 },
+    populationAtRisk: 52000,
+    
+    diseaseName: 'Sickle Cell Vaso-Occlusive Crisis & Severe Hemolytic Anemia',
+    diseaseCategory: 'Genetic / Blood Disorder',
+    activeCasesCount: 29,
+    weeklyGrowthRatePercent: 41,
+    attackRatePerThousand: 3.9,
+    severityLevel: 'High Surge',
+    outbreakSource: 'Endemic autosomal recessive hemoglobinopathy exacerbated by winter harvest dehydration & malaria co-infection.',
+    primarySymptoms: ['Excruciating bone & chest pain crisis', 'Hemoglobin dropping < 5.0 g/dL', 'Splenic sequestration', 'Jaundice & acute fatigue'],
+    
+    requiredFacilityType: 'Hemoglobin Electrophoresis Lab & 24x7 Emergency Blood Transfusion Day-Care Center',
+    requiredEquipment: ['HPLC Automated Hemoglobin Variant Analyzer', 'Refrigerated Blood Storage Unit (2-6°C)', 'Pulse Oximetry Multi-para Monitors', 'IV PCA Infusion Pumps'],
+    requiredSpecialist: 'Hematologist & Tribal Health Medical Officer',
+    requiredLifeSavingDrugs: ['Leukodepleted Packed Red Blood Cells (PRBC)', 'Hydroxyurea 500mg', 'IV Morphine/Fentanyl & Tramadol for pain crisis', 'Pneumococcal & Meningococcal Vaccines'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Harsul Tribal Sub-Center (Day OPD only)',
+    localFacilityCapacityStatus: 'Not Available / Critical Deficit',
+    deficitSummary: 'Harsul Tribal PHC lacks blood storage, HPLC electrophoresis diagnostic equipment, and opioid pain relief protocol. Patients suffer excruciating pain in transit.',
+    
+    nearestEquippedHospitalName: 'Nashik Civil District Hospital & Medical College',
+    nearestHospitalCoordinates: { lat: 19.9975, lng: 73.7898 },
+    nearestHospitalDistanceKm: 58,
+    travelTransitTimeMinutes: 110,
+    transitRiskAssessment: 'Severe crisis hazard: Hilly ghat route takes nearly 2 hours; unmanaged vaso-occlusive crisis causes acute chest syndrome and irreversible organ damage.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Red - Urgent State Action',
+    governmentRecommendation: 'Immediate Tribal Development & Health Department Proposal: 1) Sanction a dedicated 10-bed Sickle Cell Day-Care Transfusion Center at Harsul. 2) Deploy a Mobile Blood Donation & Transfusion Van. 3) Distribute Hydroxyurea and digital pain crisis alert cards to 1,200 enrolled tribal carriers.',
+    sanctionBudgetEstimateINR: '₹42.00 Lakhs (Tribal Welfare Sub-Plan Scheme Allocation)',
+    affectedPanchayats: ['Harsul', 'Chas', 'Toranmal', 'Ghoti Rural', 'Velunje'],
+    reportedByAshaOrMo: 'Dr. Sanjay Gite (MO) & ASHA Anusuya Raut',
+    lastUpdated: 'Today, 09:15 AM'
+  },
+  {
+    id: 'OUTBREAK-PUN-03',
+    ruralAreaName: 'Wagholi-Theur Industrial & Rural Corridor',
+    blockName: 'Haveli Block',
+    district: 'Pune District',
+    cityHub: 'pune',
+    coordinates: { lat: 18.5793, lng: 73.9814 },
+    populationAtRisk: 61000,
+    
+    diseaseName: 'Severe Pre-eclampsia, Eclampsia & Maternal Obstetric Crisis',
+    diseaseCategory: 'Maternal & Obstetric Crisis',
+    activeCasesCount: 19,
+    weeklyGrowthRatePercent: 35,
+    attackRatePerThousand: 2.8,
+    severityLevel: 'High Surge',
+    outbreakSource: 'High stress, nutritional anemia, delayed antenatal registration among migrant construction & rural agricultural families.',
+    primarySymptoms: ['Blood Pressure > 160/110 mmHg', 'Urinary Albumin +3 / +4', 'Epigastric pain & hyperreflexia', 'Impending eclamptic convulsions'],
+    
+    requiredFacilityType: 'Obstetric High Dependency Unit (HDU) with Emergency 24x7 Cesarean Section OT & Blood Storage',
+    requiredEquipment: ['Modern Obstetric Major OT with Laminar Flow', 'Anesthesia Workstation & Infant Resuscitation Warmer', 'Spot Automated Urine Protein-Creatinine Ratio Analyzer', 'Maternal Multi-para Monitors'],
+    requiredSpecialist: 'Senior Obstetrician/Gynecologist & Anesthetist',
+    requiredLifeSavingDrugs: ['Magnesium Sulfate 50% Injection (Pritchard regimen)', 'IV Labetalol & Oral Nifedipine 10mg', 'Oxytocin & Methylergonovine ampoules', 'Compatible O-Negative Blood Units'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Wagholi PHC (Basic Day Delivery Ward - 6 Beds)',
+    localFacilityCapacityStatus: 'Partially Equipped (Deficit)',
+    deficitSummary: 'Wagholi PHC conducts normal deliveries but has NO operational Cesarean OT, NO full-time anesthetist, and NO blood storage for postpartum hemorrhage emergency.',
+    
+    nearestEquippedHospitalName: 'Sassoon Hospital / District Women Hospital, Pune',
+    nearestHospitalCoordinates: { lat: 18.5284, lng: 73.8744 },
+    nearestHospitalDistanceKm: 22,
+    travelTransitTimeMinutes: 55,
+    transitRiskAssessment: 'High maternal-fetal mortality: Severe Nagar Highway traffic jams delay critical operative delivery beyond the golden 30-minute window.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Amber - District Collector Alert',
+    governmentRecommendation: 'Urgent Government Upgrade: 1) Upgrade Wagholi PHC to 24x7 First Referral Unit (FRU) with Cesarean OT. 2) Post full-time resident OB/GYN and Anesthetist under Pradhan Mantri Surakshit Matritva Abhiyan (PMSMA). 3) Station a dedicated Advanced Life Support (ALS) Maternal Ambulance on Nagar Road.',
+    sanctionBudgetEstimateINR: '₹55.00 Lakhs (FRU Infrastructure Upgrade & Staffing)',
+    affectedPanchayats: ['Wagholi', 'Bakori', 'Kesnand', 'Theur Rural', 'Perne'],
+    reportedByAshaOrMo: 'Dr. Rajesh Sharma (MD) & ASHA Sunita Patil',
+    lastUpdated: 'Today, 08:50 AM'
+  },
+  {
+    id: 'OUTBREAK-NGP-01',
+    ruralAreaName: 'Kanhan-Hingna Rural Forest Periphery',
+    blockName: 'Hingna Block',
+    district: 'Nagpur District',
+    cityHub: 'nagpur',
+    coordinates: { lat: 21.0664, lng: 78.9667 },
+    populationAtRisk: 39000,
+    
+    diseaseName: 'Plasmodium Falciparum Cerebral Malaria & Co-Infection',
+    diseaseCategory: 'Vector-Borne',
+    activeCasesCount: 26,
+    weeklyGrowthRatePercent: 47,
+    attackRatePerThousand: 3.5,
+    severityLevel: 'Critical Outbreak',
+    outbreakSource: 'Anopheles mosquito breeding in forest quarry pits, unlined coal-belt drainage nullahs & paddy backwaters.',
+    primarySymptoms: ['Altered sensorium & delirium', 'High remittent fever with severe rigors', 'Severe hemolysis (Hb < 6 g/dL)', 'Renal impairment / Dark urine'],
+    
+    requiredFacilityType: 'Critical Care Malaria Unit & Automated Fluorescence Microscopy Laboratory',
+    requiredEquipment: ['Automated Fluorescence Giemsa Smear Reader', 'High-Flow Nasal Cannula (HFNC)', 'Arterial Blood Gas (ABG) Analyzer', 'Point-of-Care Renal Function Cartridges'],
+    requiredSpecialist: 'Infectious Disease Physician & Critical Care MO',
+    requiredLifeSavingDrugs: ['IV Artesunate 120mg injection vials', 'Oral Artemether + Lumefantrine combination', 'IV Dextrose 10% for hypoglycemia', 'IV Sodium Bicarbonate'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Hingna Rural Sub-Center (10 Beds)',
+    localFacilityCapacityStatus: 'Not Available / Critical Deficit',
+    deficitSummary: 'Hingna PHC has zero stock of injectable Artesunate and no ICU multi-para monitors. Cerebral malaria cases risk coma without immediate parenteral therapy.',
+    
+    nearestEquippedHospitalName: 'Government Medical College & Hospital (GMC), Nagpur',
+    nearestHospitalCoordinates: { lat: 21.1458, lng: 79.0882 },
+    nearestHospitalDistanceKm: 29,
+    travelTransitTimeMinutes: 50,
+    transitRiskAssessment: 'Cerebral herniation risk: Delay in parenteral artesunate administration increases mortality to over 30% in pediatric and geriatric patients.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Red - Urgent State Action',
+    governmentRecommendation: 'State Health Directorate Emergency Order: 1) Air-drop / Emergency Dispatch of 500 vials of IV Artesunate from Nagpur Central Depot. 2) Conduct Indoor Residual Spraying (IRS) with Deltamethrin across 12 coal-belt villages. 3) Deploy a 24x7 Fever Rapid Response Team with diagnostic test kits.',
+    sanctionBudgetEstimateINR: '₹22.00 Lakhs (Vector Containment & Antimalarial Reserve)',
+    affectedPanchayats: ['Kanhan', 'Hingna Rural', 'Takalghat', 'Gumgaon', 'Mohgaon'],
+    reportedByAshaOrMo: 'Dr. L. Meshram (MO) & ASHA Lata Meshram',
+    lastUpdated: 'Today, 08:15 AM'
+  },
+  {
+    id: 'OUTBREAK-CSN-01',
+    ruralAreaName: 'Paithan Rural Canal Settlement',
+    blockName: 'Paithan Block',
+    district: 'Chhatrapati Sambhajinagar',
+    cityHub: 'chhatrapati-sambhajinagar',
+    coordinates: { lat: 19.4815, lng: 75.3852 },
+    populationAtRisk: 44000,
+    
+    diseaseName: 'Acute Viral Hepatitis E & Waterborne Hepatic Syndrome',
+    diseaseCategory: 'Water-Borne',
+    activeCasesCount: 38,
+    weeklyGrowthRatePercent: 58,
+    attackRatePerThousand: 4.6,
+    severityLevel: 'Critical Outbreak',
+    outbreakSource: 'Fecal-oral contamination of open Godavari canal drinking intake during low-reservoir stagnation.',
+    primarySymptoms: ['Deep scleral jaundice (Bilirubin > 12 mg/dL)', 'Persistent intractable vomiting', 'Coagulopathy & prolonged PT/INR', 'Extreme risk in pregnant women (Fulminant Hepatic Failure)'],
+    
+    requiredFacilityType: 'Hepatic Intensive Monitoring Ward & Automated Biochemistry Diagnostic Facility',
+    requiredEquipment: ['Fully Automated Clinical Chemistry Analyzer (LFT/RFT/Coagulation)', 'Point-of-Care Viral IgM Hepatitis ELISAs', 'Dedicated Intensive Care Bed with Continuous Liver Function Monitoring'],
+    requiredSpecialist: 'Gastroenterologist / Hepatologist & Internal Medicine Specialist',
+    requiredLifeSavingDrugs: ['Fresh Frozen Plasma (FFP) & Vitamin K injections', 'IV Albumin 20%', 'Lactulose & Hepato-protective oral solutions', 'Sterile Infusion fluids'],
+    
+    isFacilityAvailableLocally: false,
+    localFacilityName: 'Paithan Taluka PHC (12 Beds)',
+    localFacilityCapacityStatus: 'Not Available / Critical Deficit',
+    deficitSummary: 'Paithan PHC has no biochemistry analyzer for liver enzymes and no capability to manage fulminant hepatic failure. High risk for 8 pregnant women infected with Hep E.',
+    
+    nearestEquippedHospitalName: 'Ghati Government Medical College & Hospital, Sambhajinagar',
+    nearestHospitalCoordinates: { lat: 19.8762, lng: 75.3433 },
+    nearestHospitalDistanceKm: 44,
+    travelTransitTimeMinutes: 75,
+    transitRiskAssessment: 'Fulminant hepatic failure warning: Pregnant mothers in 3rd trimester infected with Hepatitis E face a 25% mortality rate without specialized ICU liver support.',
+    
+    governmentActionStatus: 'Action Required (Deficit Escalated)',
+    governmentAlertLevel: 'Red - Urgent State Action',
+    governmentRecommendation: 'Urgent Inter-Departmental Requisition (Water Supply + Health): 1) Immediate ban on untreated Godavari canal intake & deployment of 15 clean drinking water tankers. 2) Emergency installation of an Automated Biochemistry Analyzer at Paithan Sub-District Hospital. 3) Priority evacuation of all jaundice-affected pregnant mothers to Ghati Hospital ICU.',
+    sanctionBudgetEstimateINR: '₹26.80 Lakhs (Clean Water Tanker Supply & Automated LFT Machine)',
+    affectedPanchayats: ['Paithan Rural', 'Balegaon', 'Mudheshwad', 'Shevgaon Road', 'Pimpalwadi'],
+    reportedByAshaOrMo: 'Dr. V. K. Deshmukh (Taluka Health Officer)',
+    lastUpdated: 'Yesterday, 04:30 PM'
+  },
+  {
+    id: 'OUTBREAK-STR-01',
+    ruralAreaName: 'Wai-Mahabaleshwar Foothills Forest Corridor',
+    blockName: 'Wai Block',
+    district: 'Satara District',
+    cityHub: 'satara',
+    coordinates: { lat: 17.9487, lng: 73.8906 },
+    populationAtRisk: 31000,
+    
+    diseaseName: 'Venomous Snakebite Envenomation (Viper & Krait) & Acute Neuro/Vasotoxic Shock',
+    diseaseCategory: 'Zoonotic / Venomous',
+    activeCasesCount: 14,
+    weeklyGrowthRatePercent: 22,
+    attackRatePerThousand: 2.1,
+    severityLevel: 'Moderate Cluster',
+    outbreakSource: 'Monsoon agricultural weeding and forest clearing encounters with venomous Daboia russelii and Bungarus caeruleus.',
+    primarySymptoms: ['Progressive ptosis & respiratory paralysis', 'Local tissue necrosis & severe compartment syndrome', 'Incoagulable blood (20-min Whole Blood Clotting Test failed)', 'Hypotensive shock'],
+    
+    requiredFacilityType: 'Mechanical Ventilator Critical Triage Bay with Polyvalent ASV Cold Chain & Dialysis Backup',
+    requiredEquipment: ['Invasive Mechanical Ventilator & Non-invasive BiPAP', 'Dedicated ASV Cold Chain Refrigerator (2-8°C)', 'Point-of-Care 20WBCT Kits & Coagulometer', 'Surgical Debridement Tray'],
+    requiredSpecialist: 'Critical Care Anesthetist & Trauma Surgeon',
+    requiredLifeSavingDrugs: ['Polyvalent Anti-Snake Venom (ASV) Lyophilized (200 vials)', 'Neostigmine & Atropine for neurotoxic reversal', 'Tetanus Toxoid & IV Antibiotics', 'Fresh Frozen Plasma'],
+    
+    isFacilityAvailableLocally: true,
+    localFacilityName: 'Wai Sub-District Hospital (SDH - 50 Beds)',
+    localFacilityCapacityStatus: 'Fully Operational & Equipped',
+    deficitSummary: 'Wai SDH has 4 operational mechanical ventilators, 120 vials of ASV in active cold storage, and 24x7 medical officers trained in snakebite protocol.',
+    
+    nearestEquippedHospitalName: 'Wai Sub-District Hospital (Local Center)',
+    nearestHospitalCoordinates: { lat: 17.9487, lng: 73.8906 },
+    nearestHospitalDistanceKm: 2,
+    travelTransitTimeMinutes: 6,
+    transitRiskAssessment: 'Low transit barrier: Local facility is fully operational within 10 minutes transit. Zero fatalities recorded this quarter.',
+    
+    governmentActionStatus: 'Facility Sufficient',
+    governmentAlertLevel: 'Green - Standard Monitoring',
+    governmentRecommendation: 'Standard Monitoring: Re-order 50 vials of polyvalent ASV to maintain optimum 150-vial buffer for upcoming harvest season. Continue community footwear distribution.',
+    sanctionBudgetEstimateINR: '₹4.50 Lakhs (Routine ASV Stock Replenishment)',
+    affectedPanchayats: ['Wai', 'Bhuinj', 'Pasarni', 'Bavdhan', 'Degaon'],
+    reportedByAshaOrMo: 'Dr. M. S. Salunkhe (SDH Superintendent)',
+    lastUpdated: 'Today, 07:20 AM'
+  },
+  {
+    id: 'OUTBREAK-PUN-04',
+    ruralAreaName: 'Baramati-Indapur Sugarcane Farming Belt',
+    blockName: 'Baramati Block',
+    district: 'Pune District',
+    cityHub: 'pune',
+    coordinates: { lat: 18.1517, lng: 74.5772 },
+    populationAtRisk: 55000,
+    
+    diseaseName: 'Leptospirosis & Acute Febrile Renal Syndrome',
+    diseaseCategory: 'Zoonotic / Venomous',
+    activeCasesCount: 18,
+    weeklyGrowthRatePercent: 29,
+    attackRatePerThousand: 1.9,
+    severityLevel: 'Moderate Cluster',
+    outbreakSource: 'Cattle urine contamination in waterlogged sugarcane fields during harvest and post-monsoon irrigation.',
+    primarySymptoms: ['Conjunctival suffusion without purulence', 'Severe calf muscle tenderness', 'Rising Serum Creatinine & Oliguria', 'Jaundice and pulmonary hemorrhage'],
+    
+    requiredFacilityType: 'Rural Hemodialysis Unit & Darkfield Microscopy Serology Laboratory',
+    requiredEquipment: ['2-Bed Maintenance Hemodialysis Machine with RO Plant', 'Microscopic Agglutination Test (MAT) Analyzer', 'Point-of-Care Serum Creatinine & Electrolyte Analyzer'],
+    requiredSpecialist: 'Nephrologist & General Physician',
+    requiredLifeSavingDrugs: ['IV Crystalline Penicillin G & Ceftriaxone', 'Doxycycline 100mg for chemoprophylaxis', 'IV Furosemide & Sodium Bicarbonate'],
+    
+    isFacilityAvailableLocally: true,
+    localFacilityName: 'Baramati Government Sub-District Hospital & Medical College',
+    localFacilityCapacityStatus: 'Fully Operational & Equipped',
+    deficitSummary: 'Baramati SDH is equipped with a 6-bed Dialysis Unit, automated MAT testing, and full ICU backup. All 18 patients stabilized successfully.',
+    
+    nearestEquippedHospitalName: 'Baramati Government Medical College & Hospital',
+    nearestHospitalCoordinates: { lat: 18.1517, lng: 74.5772 },
+    nearestHospitalDistanceKm: 4,
+    travelTransitTimeMinutes: 8,
+    transitRiskAssessment: 'Low transit barrier: Dedicated rural transport available; local dialysis prevents uremic complications.',
+    
+    governmentActionStatus: 'Facility Sufficient',
+    governmentAlertLevel: 'Green - Standard Monitoring',
+    governmentRecommendation: 'Standard Monitoring: Distribute prophylactic Doxycycline (200mg weekly) to 3,500 registered sugarcane cutters and provide rubber gumboots through agricultural welfare boards.',
+    sanctionBudgetEstimateINR: '₹6.20 Lakhs (Prophylaxis & Protective Gear Scheme)',
+    affectedPanchayats: ['Malegaon', 'Songaon', 'Katewadi', 'Nira Vagaj', 'Korhale'],
+    reportedByAshaOrMo: 'Dr. Archana Deshmukh (MO)',
+    lastUpdated: 'Yesterday, 06:10 PM'
+  }
+];
+

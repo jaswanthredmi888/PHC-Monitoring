@@ -11,13 +11,16 @@ import {
   WifiOff, 
   Building2,
   ShieldCheck,
-  User
+  User,
+  MapPin,
+  ShieldAlert
 } from 'lucide-react';
 
 interface HeaderProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   pendingTeleconsultsCount: number;
+  criticalDeficitsCount?: number;
   isOnline: boolean;
   setIsOnline: (online: boolean) => void;
   lastSyncTime: string;
@@ -28,6 +31,7 @@ export const Header: React.FC<HeaderProps> = ({
   activeTab,
   setActiveTab,
   pendingTeleconsultsCount,
+  criticalDeficitsCount = 6,
   isOnline,
   setIsOnline,
   lastSyncTime,
@@ -166,6 +170,24 @@ export const Header: React.FC<HeaderProps> = ({
             >
               <AlertTriangle className="w-4 h-4" />
               <span>High-Risk ANC (28)</span>
+            </button>
+
+            <button
+              id="tab-disease-gap"
+              onClick={() => setActiveTab('disease-gap')}
+              className={`relative py-3 px-2 border-b-2 text-xs sm:text-sm font-semibold transition-all duration-150 whitespace-nowrap flex items-center gap-2 ${
+                activeTab === 'disease-gap'
+                  ? 'border-rose-600 text-rose-600 font-bold'
+                  : 'border-transparent text-slate-600 hover:text-slate-900'
+              }`}
+            >
+              <ShieldAlert className="w-4 h-4 text-rose-600" />
+              <span>Disease & Facility Gap Map</span>
+              {criticalDeficitsCount > 0 && (
+                <span className="flex items-center justify-center px-1.5 min-w-4 h-4 text-[10px] font-bold rounded-full bg-rose-600 text-white animate-pulse">
+                  {criticalDeficitsCount} Deficits
+                </span>
+              )}
             </button>
           </nav>
         </div>

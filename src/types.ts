@@ -1,4 +1,52 @@
-export type TabType = 'dashboard' | 'teleconsult' | 'inventory' | 'highrisk';
+export type TabType = 'dashboard' | 'teleconsult' | 'inventory' | 'highrisk' | 'disease-gap';
+
+export interface DiseaseOutbreakZone {
+  id: string;
+  ruralAreaName: string;
+  blockName: string;
+  district: string;
+  cityHub: string;
+  coordinates: { lat: number; lng: number };
+  populationAtRisk: number;
+  
+  // Disease Spreading Information
+  diseaseName: string;
+  diseaseCategory: 'Vector-Borne' | 'Water-Borne' | 'Maternal & Obstetric Crisis' | 'Zoonotic / Venomous' | 'Genetic / Blood Disorder' | 'Viral & Respiratory';
+  activeCasesCount: number;
+  weeklyGrowthRatePercent: number;
+  attackRatePerThousand: number;
+  severityLevel: 'Critical Outbreak' | 'High Surge' | 'Moderate Cluster' | 'Contained';
+  outbreakSource: string;
+  primarySymptoms: string[];
+  
+  // Required Facility / Medical Treatment Capability to Cure this Disease
+  requiredFacilityType: string;
+  requiredEquipment: string[];
+  requiredSpecialist: string;
+  requiredLifeSavingDrugs: string[];
+  
+  // Local Availability Status in that rural area
+  isFacilityAvailableLocally: boolean;
+  localFacilityName: string;
+  localFacilityCapacityStatus: 'Not Available / Critical Deficit' | 'Partially Equipped (Deficit)' | 'Fully Operational & Equipped';
+  deficitSummary: string;
+  
+  // Gap & Distance to nearest treatment center if not available
+  nearestEquippedHospitalName: string;
+  nearestHospitalCoordinates: { lat: number; lng: number };
+  nearestHospitalDistanceKm: number;
+  travelTransitTimeMinutes: number;
+  transitRiskAssessment: string;
+  
+  // Government Alert & Escalation Details
+  governmentActionStatus: 'Action Required (Deficit Escalated)' | 'Mobile Unit Sanctioned' | 'Emergency Allocation Approved' | 'Facility Sufficient';
+  governmentAlertLevel: 'Red - Urgent State Action' | 'Amber - District Collector Alert' | 'Green - Standard Monitoring';
+  governmentRecommendation: string;
+  sanctionBudgetEstimateINR: string;
+  affectedPanchayats: string[];
+  reportedByAshaOrMo: string;
+  lastUpdated: string;
+}
 
 export interface SectorData {
   id: string;

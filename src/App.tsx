@@ -1,18 +1,20 @@
 import React, { useState } from 'react';
-import { TabType, SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient } from './types';
+import { TabType, SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient, DiseaseOutbreakZone } from './types';
 import { 
   INITIAL_SECTORS, 
   INITIAL_ASHA_WORKERS, 
   INITIAL_TELECONSULTATIONS, 
   INITIAL_MEDICINES, 
   INITIAL_FACILITY_STATUS, 
-  INITIAL_HIGH_RISK_PATIENTS 
+  INITIAL_HIGH_RISK_PATIENTS,
+  INITIAL_DISEASE_OUTBREAK_ZONES
 } from './data/mockData';
 import { Header } from './components/Header';
 import { DashboardOverview } from './components/DashboardOverview';
 import { TeleConsultant } from './components/TeleConsultant';
 import { MedicineFacilityUpdate } from './components/MedicineFacilityUpdate';
 import { HighRiskANCView } from './components/HighRiskANCView';
+import { DiseaseFacilityGapMap } from './components/DiseaseFacilityGapMap';
 import { AppLogo } from './components/AppLogo';
 import confetti from 'canvas-confetti';
 
@@ -25,6 +27,7 @@ export default function App() {
   const [medicines, setMedicines] = useState<MedicineItem[]>(INITIAL_MEDICINES);
   const [facilityStatus, setFacilityStatus] = useState<FacilityStatus>(INITIAL_FACILITY_STATUS);
   const [highRiskPatients, setHighRiskPatients] = useState<HighRiskPatient[]>(INITIAL_HIGH_RISK_PATIENTS);
+  const [diseaseOutbreakZones, setDiseaseOutbreakZones] = useState<DiseaseOutbreakZone[]>(INITIAL_DISEASE_OUTBREAK_ZONES);
 
   // Network & Sync State
   const [isOnline, setIsOnline] = useState(true);
@@ -32,11 +35,12 @@ export default function App() {
   const [syncNotice, setSyncNotice] = useState<string | null>(null);
 
   const pendingTeleconsults = teleconsultRequests.filter(r => r.status === 'Waiting').length;
+  const criticalDeficitsCount = diseaseOutbreakZones.filter(z => !z.isFacilityAvailableLocally).length;
 
   const handleRefreshSync = () => {
     confetti({ particleCount: 35, spread: 50 });
     setLastSyncTime('Just Now');
-    setSyncNotice('All PHC field registries, ASHA tablets & Central Telemedicine servers synchronized.');
+    setSyncNotice('All PHC field registries, ASHA tablets, Outbreak Telemetry & Central Telemedicine servers synchronized.');
     setTimeout(() => setSyncNotice(null), 4000);
   };
 
@@ -47,6 +51,10 @@ export default function App() {
   const handleAddTeleconsult = (newReq: TeleconsultationRequest) => {
     setTeleconsultRequests(prev => [newReq, ...prev]);
     setActiveTab('teleconsult');
+  };
+
+  const handleUpdateDiseaseZone = (updatedZone: DiseaseOutbreakZone) => {
+    setDiseaseOutbreakZones(prev => prev.map(z => z.id === updatedZone.id ? updatedZone : z));
   };
 
   const handleInitiateTeleconsultFromAnywhere = (patientName?: string, sectorName?: string) => {
@@ -96,6 +104,7 @@ export default function App() {
         activeTab={activeTab}
         setActiveTab={setActiveTab}
         pendingTeleconsultsCount={pendingTeleconsults}
+        criticalDeficitsCount={criticalDeficitsCount}
         isOnline={isOnline}
         setIsOnline={setIsOnline}
         lastSyncTime={lastSyncTime}
@@ -144,6 +153,14 @@ export default function App() {
           <HighRiskANCView
             patients={highRiskPatients}
             onConnectTeleconsult={handleInitiateTeleconsultFromAnywhere}
+          />
+        )}
+
+        {activeTab === 'disease-gap' && (
+          <DiseaseFacilityGapMap
+            outbreakZones={diseaseOutbreakZones}
+            onUpdateZone={handleUpdateDiseaseZone}
+            onInitiateTeleconsult={handleInitiateTeleconsultFromAnywhere}
           />
         )}
       </main>

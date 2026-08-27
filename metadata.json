@@ -1,6 +1,6 @@
 {
   "name": "PHC Monitoring",
-  "description": "Comprehensive web dashboard for Primary Health Center (PHC) staff featuring live epidemiological GIS monitoring, ASHA field workforce tracking, real-time Tele-Consultant doctor bridge, and medicine and facility availability management.",
+  "description": "Comprehensive web dashboard for Primary Health Center (PHC) staff featuring live epidemiological GIS monitoring, rural disease spreading and hospital facility deficit surveillance for government escalation, ASHA field workforce tracking, real-time Tele-Consultant doctor bridge, and medicine and facility management.",
   "requestFramePermissions": ["camera", "microphone", "geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

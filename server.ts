@@ -141,6 +141,64 @@ Format as JSON:
     }
   });
 
+  // AI Government Action & Facility Gap Escalation Proposal API
+  app.post('/api/gemini/facility-gap-proposal', async (req, res) => {
+    try {
+      const { zone } = req.body;
+      const client = getAIClient();
+
+      if (!client) {
+        return res.json({
+          executiveSummary: `URGENT INTERVENTION: ${zone?.diseaseName || 'Epidemic'} outbreak in ${zone?.ruralAreaName || 'Rural Block'} requires immediate specialized healthcare infrastructure sanction.`,
+          immediateMeasures: [
+            `Deploy 108 Emergency Mobile Medical Unit with specialized ${zone?.requiredSpecialist || 'clinical team'} within 12 hours.`,
+            `Establish temporary field treatment ward at nearest block school or gram panchayat hall.`,
+            `Dispatch emergency reserve of life-saving medical supplies (${zone?.requiredLifeSavingDrugs?.[0] || 'essential drugs'}).`
+          ],
+          longTermInfrastructurePlan: `Sanction permanent upgrade of ${zone?.localFacilityName || 'Local PHC'} to First Referral Unit (FRU) with ${zone?.requiredFacilityType || 'specialized facility'}.`,
+          budgetBreakdown: [
+            { item: 'Mobile Unit & Field Triage Camp', costINR: '₹12,00,000' },
+            { item: 'Specialized Diagnostic & Treatment Equipment', costINR: '₹18,50,000' },
+            { item: 'Emergency Buffer of Life-Saving Drugs', costINR: '₹4,00,000' }
+          ],
+          totalSanctionEstimateINR: zone?.sanctionBudgetEstimateINR || '₹34.50 Lakhs',
+          urgencyClassification: 'Immediate Cabinet / District Magistrate Action'
+        });
+      }
+
+      const prompt = `You are a Chief Public Health Strategy Officer advising the Ministry of Health and District Collector on rural epidemic response and hospital infrastructure deficits in India.
+Analyze the following rural disease outbreak and facility deficit data:
+${JSON.stringify(zone || {})}
+
+Formulate an official, structured Government Action Proposal and Infrastructure Sanction Plan.
+Format strictly as JSON:
+{
+  "executiveSummary": "string",
+  "immediateMeasures": ["string", "string", "string"],
+  "longTermInfrastructurePlan": "string",
+  "budgetBreakdown": [
+    { "item": "string", "costINR": "string" }
+  ],
+  "totalSanctionEstimateINR": "string",
+  "urgencyClassification": "string"
+}`;
+
+      const response = await client.models.generateContent({
+        model: 'gemini-2.5-flash',
+        contents: prompt,
+        config: {
+          responseMimeType: 'application/json',
+        }
+      });
+
+      const parsed = JSON.parse(response.text || '{}');
+      return res.json(parsed);
+    } catch (err: any) {
+      console.error('Facility Gap Proposal Error:', err);
+      return res.status(500).json({ error: 'Proposal generation error', fallback: true });
+    }
+  });
+
   // Vite middleware for development
   if (process.env.NODE_ENV !== 'production') {
     const vite = await createViteServer({
