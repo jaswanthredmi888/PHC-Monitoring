@@ -47,9 +47,6 @@ export const Header: React.FC<HeaderProps> = ({
                 <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
                   PHC Monitoring
                 </h1>
-                <span className="hidden sm:inline-flex items-center px-2 py-0.5 rounded text-[11px] font-medium bg-blue-50 text-blue-700 border border-blue-200">
-                  AshaCare⁺ Hub
-                </span>
               </div>
               <p className="text-[11px] font-medium text-slate-500 hidden sm:block">
                 Pune District Primary Health Center Hub • Maharashtra (Arogya Vibhag)

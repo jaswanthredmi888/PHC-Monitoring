@@ -155,9 +155,9 @@ export default function App() {
             <AppLogo size="xs" />
             <span className="font-semibold text-slate-800">PHC Monitoring</span>
             <span>•</span>
-            <span>AshaCare⁺ Clinical Command Hub</span>
+            <span>Clinical Command Center</span>
             <span>•</span>
-            <span className="font-mono text-[11px] text-blue-600 font-semibold">Kanchipuram District Health Registry</span>
+            <span className="font-mono text-[11px] text-blue-600 font-semibold">Maharashtra District Health Registry</span>
           </div>
           <div className="flex items-center gap-4 font-mono text-[11px]">
             <span>National Health Mission (NHM) Verified</span>

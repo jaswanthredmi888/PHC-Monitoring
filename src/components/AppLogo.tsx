@@ -37,8 +37,8 @@ export const AppLogo: React.FC<AppLogoProps> = ({
           <span className="text-sm font-bold tracking-tight text-slate-900 leading-tight">
             PHC Monitoring
           </span>
-          <span className="text-[10px] font-semibold text-pink-600 font-mono">
-            AshaCare⁺
+          <span className="text-[10px] font-semibold text-blue-600 font-mono">
+            Health Portal
           </span>
         </div>
       )}
