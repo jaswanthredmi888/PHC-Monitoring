@@ -19,7 +19,6 @@ import {
   Edit2,
   Trash2
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface MedicineFacilityUpdateProps {
   medicines: MedicineItem[];
@@ -142,11 +141,6 @@ export const MedicineFacilityUpdate: React.FC<MedicineFacilityUpdateProps> = ({
       lastUpdated: 'Today, ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
     };
     onUpdateFacility(updated);
-    confetti({
-      particleCount: 50,
-      spread: 60,
-      origin: { y: 0.7 }
-    });
     showToast('Hospital facility and equipment status broadcasted to District Health Registry & ASHA tablets!');
   };
 

@@ -1,11 +1,12 @@
 import React from 'react';
-import { Users, ShieldCheck, AlertTriangle, TrendingUp } from 'lucide-react';
+import { Users, ShieldCheck, ArrowRightLeft, TrendingUp } from 'lucide-react';
 
 interface MetricCardsProps {
   onCardClick?: (metric: string) => void;
+  referralsCount?: number;
 }
 
-export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick }) => {
+export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referralsCount = 8 }) => {
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
@@ -58,26 +59,26 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick }) => {
         </div>
       </div>
 
-      {/* 3. SEVERE HIGH-RISKS */}
+      {/* 3. REFERRAL & FOLLOW-UP */}
       <div 
-        onClick={() => onCardClick && onCardClick('highrisk')}
+        onClick={() => onCardClick && onCardClick('referrals')}
         className="bg-white rounded-xl border border-slate-200 shadow-xs p-5 hover:border-slate-300 transition-all cursor-pointer flex flex-col justify-between"
       >
         <div className="flex items-start justify-between">
-          <span className="text-[11px] font-bold uppercase tracking-wider text-rose-600 font-mono">
-            Severe High-Risks
+          <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 font-mono">
+            Referral & Follow-up
           </span>
-          <div className="w-9 h-9 rounded-lg bg-rose-50 flex items-center justify-center text-rose-600">
-            <AlertTriangle className="w-4 h-4" />
+          <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
+            <ArrowRightLeft className="w-4 h-4" />
           </div>
         </div>
 
         <div className="mt-3">
-          <div className="text-2xl sm:text-3xl font-bold text-rose-600 tracking-tight">
-            28
+          <div className="text-2xl sm:text-3xl font-bold text-blue-600 tracking-tight">
+            {referralsCount}
           </div>
-          <div className="text-xs font-medium text-rose-600 mt-1">
-            Primary gestational tracking
+          <div className="text-xs font-medium text-blue-600 mt-1">
+            Grassroots hospital referrals
           </div>
         </div>
       </div>

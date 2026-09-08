@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { TabType, SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient, DiseaseOutbreakZone } from './types';
+import React, { useState, useEffect } from 'react';
+import { TabType, SectorData, AshaWorker, TeleconsultationRequest, MedicineItem, FacilityStatus, HighRiskPatient, DiseaseOutbreakZone, AuthUser, ReferralItem } from './types';
 import { 
   INITIAL_SECTORS, 
   INITIAL_ASHA_WORKERS, 
@@ -7,18 +7,31 @@ import {
   INITIAL_MEDICINES, 
   INITIAL_FACILITY_STATUS, 
   INITIAL_HIGH_RISK_PATIENTS,
-  INITIAL_DISEASE_OUTBREAK_ZONES
+  INITIAL_DISEASE_OUTBREAK_ZONES,
+  INITIAL_REFERRALS,
+  DEMO_USERS
 } from './data/mockData';
 import { Header } from './components/Header';
 import { DashboardOverview } from './components/DashboardOverview';
 import { TeleConsultant } from './components/TeleConsultant';
 import { MedicineFacilityUpdate } from './components/MedicineFacilityUpdate';
-import { HighRiskANCView } from './components/HighRiskANCView';
+import { ReferralFollowUp } from './components/ReferralFollowUp';
 import { DiseaseFacilityGapMap } from './components/DiseaseFacilityGapMap';
+import { LoginPage } from './components/LoginPage';
 import { AppLogo } from './components/AppLogo';
-import confetti from 'canvas-confetti';
 
 export default function App() {
+  // Authentication State
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
+    try {
+      const saved = localStorage.getItem('phc_auth_user');
+      if (saved) return JSON.parse(saved);
+    } catch (e) {
+      // ignore
+    }
+    return null;
+  });
+
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [sectors, setSectors] = useState<SectorData[]>(INITIAL_SECTORS);
   const [selectedSector, setSelectedSector] = useState<SectorData>(INITIAL_SECTORS[0]);
@@ -28,6 +41,7 @@ export default function App() {
   const [facilityStatus, setFacilityStatus] = useState<FacilityStatus>(INITIAL_FACILITY_STATUS);
   const [highRiskPatients, setHighRiskPatients] = useState<HighRiskPatient[]>(INITIAL_HIGH_RISK_PATIENTS);
   const [diseaseOutbreakZones, setDiseaseOutbreakZones] = useState<DiseaseOutbreakZone[]>(INITIAL_DISEASE_OUTBREAK_ZONES);
+  const [referrals, setReferrals] = useState<ReferralItem[]>(INITIAL_REFERRALS);
 
   // Network & Sync State
   const [isOnline, setIsOnline] = useState(true);
@@ -36,9 +50,31 @@ export default function App() {
 
   const pendingTeleconsults = teleconsultRequests.filter(r => r.status === 'Waiting').length;
   const criticalDeficitsCount = diseaseOutbreakZones.filter(z => !z.isFacilityAvailableLocally).length;
+  const pendingReferralsCount = referrals.filter(r => r.status !== 'Completed').length;
+
+  const handleLogin = (user: AuthUser) => {
+    setCurrentUser(user);
+    try {
+      localStorage.setItem('phc_auth_user', JSON.stringify(user));
+    } catch (e) {
+      // ignore
+    }
+    setSyncNotice(`Authenticated: Welcome ${user.name} (${user.role}) to ${user.phcName}.`);
+    setTimeout(() => setSyncNotice(null), 4500);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    try {
+      localStorage.removeItem('phc_auth_user');
+    } catch (e) {
+      // ignore
+    }
+    setSyncNotice('You have successfully signed out of the PHC Clinical Terminal.');
+    setTimeout(() => setSyncNotice(null), 3000);
+  };
 
   const handleRefreshSync = () => {
-    confetti({ particleCount: 35, spread: 50 });
     setLastSyncTime('Just Now');
     setSyncNotice('All PHC field registries, ASHA tablets, Outbreak Telemetry & Central Telemedicine servers synchronized.');
     setTimeout(() => setSyncNotice(null), 4000);
@@ -55,6 +91,14 @@ export default function App() {
 
   const handleUpdateDiseaseZone = (updatedZone: DiseaseOutbreakZone) => {
     setDiseaseOutbreakZones(prev => prev.map(z => z.id === updatedZone.id ? updatedZone : z));
+  };
+
+  const handleUpdateReferral = (updated: ReferralItem) => {
+    setReferrals(prev => prev.map(r => r.id === updated.id ? updated : r));
+  };
+
+  const handleAddReferral = (newReferral: ReferralItem) => {
+    setReferrals(prev => [newReferral, ...prev]);
   };
 
   const handleInitiateTeleconsultFromAnywhere = (patientName?: string, sectorName?: string) => {
@@ -96,6 +140,11 @@ export default function App() {
     setActiveTab('teleconsult');
   };
 
+  // If user is not authenticated, display clean login portal
+  if (!currentUser) {
+    return <LoginPage onLogin={handleLogin} />;
+  }
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col font-sans selection:bg-blue-600 selection:text-white">
       
@@ -105,10 +154,13 @@ export default function App() {
         setActiveTab={setActiveTab}
         pendingTeleconsultsCount={pendingTeleconsults}
         criticalDeficitsCount={criticalDeficitsCount}
+        pendingReferralsCount={pendingReferralsCount}
         isOnline={isOnline}
         setIsOnline={setIsOnline}
         lastSyncTime={lastSyncTime}
         onRefreshSync={handleRefreshSync}
+        currentUser={currentUser}
+        onLogout={handleLogout}
       />
 
       {/* Sync Flash Notice */}
@@ -149,10 +201,11 @@ export default function App() {
           />
         )}
 
-        {activeTab === 'highrisk' && (
-          <HighRiskANCView
-            patients={highRiskPatients}
-            onConnectTeleconsult={handleInitiateTeleconsultFromAnywhere}
+        {activeTab === 'referrals' && (
+          <ReferralFollowUp
+            referrals={referrals}
+            onUpdateReferral={handleUpdateReferral}
+            onAddReferral={handleAddReferral}
           />
         )}
 

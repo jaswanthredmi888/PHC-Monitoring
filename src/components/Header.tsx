@@ -13,18 +13,24 @@ import {
   ShieldCheck,
   User,
   MapPin,
-  ShieldAlert
+  ShieldAlert,
+  LogOut,
+  ArrowRightLeft
 } from 'lucide-react';
+import { AuthUser } from '../types';
 
 interface HeaderProps {
   activeTab: TabType;
   setActiveTab: (tab: TabType) => void;
   pendingTeleconsultsCount: number;
   criticalDeficitsCount?: number;
+  pendingReferralsCount?: number;
   isOnline: boolean;
   setIsOnline: (online: boolean) => void;
   lastSyncTime: string;
   onRefreshSync: () => void;
+  currentUser?: AuthUser | null;
+  onLogout?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -32,10 +38,13 @@ export const Header: React.FC<HeaderProps> = ({
   setActiveTab,
   pendingTeleconsultsCount,
   criticalDeficitsCount = 6,
+  pendingReferralsCount = 0,
   isOnline,
   setIsOnline,
   lastSyncTime,
-  onRefreshSync
+  onRefreshSync,
+  currentUser,
+  onLogout
 }) => {
   return (
     <header id="phc-header" className="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-xs">
@@ -96,15 +105,33 @@ export const Header: React.FC<HeaderProps> = ({
               )}
             </button>
 
-            {/* Staff User Avatar */}
-            <div className="flex items-center gap-3 pl-2 sm:border-l sm:border-slate-200">
+            {/* Staff User Avatar & Session Actions */}
+            <div className="flex items-center gap-2.5 pl-2 sm:border-l sm:border-slate-200">
               <div className="text-right hidden sm:block">
-                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">Staff on Duty</p>
-                <p className="text-xs font-bold text-slate-800">Dr. Ananya Sharma</p>
+                <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider">
+                  {currentUser?.role?.split('(')[0] || 'Staff on Duty'}
+                </p>
+                <p className="text-xs font-bold text-slate-800">
+                  {currentUser?.name || 'Dr. Ananya Sharma'}
+                </p>
               </div>
-              <div className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-xs">
-                AS
+              <div 
+                title={currentUser ? `${currentUser.name} (${currentUser.role}) • ${currentUser.phcName}` : 'Staff Profile'}
+                className="w-9 h-9 rounded-full bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 font-bold text-xs shrink-0 cursor-default"
+              >
+                {currentUser?.initials || 'AS'}
               </div>
+
+              {onLogout && (
+                <button
+                  id="btn-header-logout"
+                  onClick={onLogout}
+                  title="Sign Out of Clinical Portal"
+                  className="p-1.5 rounded-lg text-slate-400 hover:text-rose-600 hover:bg-rose-50 transition border border-transparent hover:border-rose-200 ml-0.5"
+                >
+                  <LogOut className="w-4 h-4" />
+                </button>
+              )}
             </div>
           </div>
 
@@ -160,16 +187,21 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             <button
-              id="tab-highrisk"
-              onClick={() => setActiveTab('highrisk')}
-              className={`py-3 px-2 border-b-2 text-xs sm:text-sm font-semibold transition-all duration-150 whitespace-nowrap flex items-center gap-2 ${
-                activeTab === 'highrisk'
-                  ? 'border-blue-600 text-blue-600'
+              id="tab-referrals"
+              onClick={() => setActiveTab('referrals')}
+              className={`relative py-3 px-2 border-b-2 text-xs sm:text-sm font-semibold transition-all duration-150 whitespace-nowrap flex items-center gap-2 ${
+                activeTab === 'referrals'
+                  ? 'border-blue-600 text-blue-600 font-bold'
                   : 'border-transparent text-slate-500 hover:text-slate-800'
               }`}
             >
-              <AlertTriangle className="w-4 h-4" />
-              <span>High-Risk ANC (28)</span>
+              <ArrowRightLeft className="w-4 h-4" />
+              <span>Referral & Follow-up</span>
+              {pendingReferralsCount > 0 && (
+                <span className="flex items-center justify-center px-1.5 min-w-4 h-4 text-[10px] font-bold rounded-full bg-amber-500 text-white">
+                  {pendingReferralsCount}
+                </span>
+              )}
             </button>
 
             <button

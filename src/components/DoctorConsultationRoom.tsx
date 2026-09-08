@@ -21,7 +21,6 @@ import {
   User,
   ShieldCheck
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface DoctorConsultationRoomProps {
   consultation: TeleconsultationRequest;
@@ -101,12 +100,6 @@ export const DoctorConsultationRoom: React.FC<DoctorConsultationRoomProps> = ({
   };
 
   const handleFinishConsultation = () => {
-    confetti({
-      particleCount: 60,
-      spread: 70,
-      origin: { y: 0.6 }
-    });
-
     const updated: TeleconsultationRequest = {
       ...consultation,
       status: 'Completed',

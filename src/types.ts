@@ -1,4 +1,4 @@
-export type TabType = 'dashboard' | 'teleconsult' | 'inventory' | 'highrisk' | 'disease-gap';
+export type TabType = 'dashboard' | 'teleconsult' | 'inventory' | 'referrals' | 'disease-gap' | 'highrisk';
 
 export interface DiseaseOutbreakZone {
   id: string;
@@ -191,4 +191,79 @@ export interface HighRiskPatient {
   ashaName: string;
   lastVisitDate: string;
   recommendedAction: string;
+}
+
+export interface AuthUser {
+  id: string;
+  name: string;
+  role: string;
+  designation: string;
+  employeeCode: string;
+  district: string;
+  phcName: string;
+  email: string;
+  initials: string;
+  avatarUrl?: string;
+}
+
+export type ReferralStatus = 'Created' | 'Accepted' | 'Reached' | 'Consultation' | 'Completed';
+export type ReferralPriority = 'Critical' | 'High' | 'Medium' | 'Routine';
+export type FollowUpStatus = 'Pending' | 'Scheduled' | 'Completed' | 'Missed' | 'Overdue';
+export type ReferralCategory = 'Maternal & High-Risk ANC' | 'Child & Pediatric' | 'Chronic Care' | 'Emergency & Trauma' | 'General & Specialty';
+
+export interface ReferralStatusStep {
+  status: ReferralStatus;
+  timestamp: string;
+  note?: string;
+  updatedBy?: string;
+}
+
+export interface ReferralItem {
+  id: string; // e.g. 'SEVA-PAT-1024'
+  familyId: string; // e.g. 'FAM-MH-9481'
+  patientName: string;
+  patientAge: number;
+  patientGender: 'Female' | 'Male' | 'Other';
+  patientPhone: string;
+  village: string;
+  sector: string;
+  category: ReferralCategory;
+  isHighRisk: boolean;
+  highRiskReason?: string;
+  
+  // Referring Worker & Facility
+  referringWorkerName: string; // e.g., 'Sunita Patil (ASHA)'
+  referringWorkerRole: 'ASHA' | 'ANM' | 'Community Health Officer';
+  referringWorkerPhone: string;
+  referringFacility: string; // e.g., 'Chandanagiri Health Sub-Center'
+  
+  // Referred Hospital & Department
+  referredHospital: string; // e.g., 'District Hospital', 'Rural Hospital Shirur'
+  referredDepartment: string; // e.g., 'Obstetrics & High-Risk Pregnancy', 'Pediatrics'
+  
+  // Clinical Context & Priority
+  reasonForReferral: string;
+  clinicalNotes: string;
+  priority: ReferralPriority;
+  
+  // Dates & Status Tracking
+  referralDate: string; // e.g. '08 Sep'
+  fullReferralDate: string; // e.g. '08 Sep 2026, 09:30 AM'
+  status: ReferralStatus; // Created -> Accepted -> Reached -> Consultation -> Completed
+  statusTimeline: ReferralStatusStep[];
+  
+  // Transit & Delay Identification
+  hasReached: boolean;
+  isDelayed: boolean;
+  delayedHours?: number;
+  delayedReason?: string;
+  completionTimeHours?: number; // e.g. 4.2 hrs
+  
+  // Follow-up Management
+  followUpDate: string; // e.g. '12 Sep'
+  fullFollowUpDate: string; // e.g. '12 Sep 2026'
+  followUpStatus: FollowUpStatus;
+  followUpNotes?: string;
+  remindersSentCount: number;
+  lastReminderSentAt?: string;
 }

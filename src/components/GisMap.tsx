@@ -1,4 +1,3 @@
-// Source: Google Maps Platform Code Assist
 import React, { useState, useEffect, useRef } from 'react';
 import { SectorData } from '../types';
 import { MAHARASHTRA_CITIES, MaharashtraCityHub } from '../data/mockData';
@@ -171,7 +170,7 @@ export const GisMap: React.FC<GisMapProps> = ({
     }
   }, [selectedSector]);
 
-  // Tile layer URL selector
+  // Tile layer URL selector (pure OpenStreetMap)
   const getTileLayerUrl = () => {
     switch (mapLayer) {
       case 'satellite':
@@ -180,7 +179,7 @@ export const GisMap: React.FC<GisMapProps> = ({
         return 'https://{s}.tile.opentopomap.org/{z}/{x}/{y}.png';
       case 'roadmap':
       default:
-        return 'https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png';
+        return 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png';
     }
   };
 
@@ -189,10 +188,10 @@ export const GisMap: React.FC<GisMapProps> = ({
       case 'satellite':
         return '&copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community';
       case 'terrain':
-        return '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> (&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a>)';
+        return '&copy; <a href="https://opentopomap.org">OpenTopoMap</a> (&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors)';
       case 'roadmap':
       default:
-        return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>';
+        return '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
     }
   };
 
@@ -307,7 +306,7 @@ export const GisMap: React.FC<GisMapProps> = ({
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Roadmap
+              OpenStreetMap
             </button>
             <button
               onClick={() => setMapLayer('satellite')}
@@ -327,7 +326,7 @@ export const GisMap: React.FC<GisMapProps> = ({
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
-              Terrain
+              Terrain (OSM)
             </button>
           </div>
         </div>

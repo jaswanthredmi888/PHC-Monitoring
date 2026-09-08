@@ -13,7 +13,6 @@ import {
   User,
   Phone
 } from 'lucide-react';
-import confetti from 'canvas-confetti';
 
 interface HighRiskANCViewProps {
   patients: HighRiskPatient[];
@@ -29,7 +28,6 @@ export const HighRiskANCView: React.FC<HighRiskANCViewProps> = ({
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   const handleDispatchAmbulance = (patient: HighRiskPatient) => {
-    confetti({ particleCount: 40, spread: 50 });
     setToastMessage(`108 Emergency Ambulance Unit Dispatched to ${patient.village} for ${patient.name}! ETA: 14 mins.`);
     setTimeout(() => setToastMessage(null), 5000);
   };

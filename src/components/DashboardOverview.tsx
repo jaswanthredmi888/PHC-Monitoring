@@ -60,7 +60,7 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
       {/* 1. Top Metrics Section */}
       <section>
         <MetricCards onCardClick={(m) => {
-          if (m === 'highrisk') onNavigateTab('highrisk');
+          if (m === 'referrals' || m === 'highrisk') onNavigateTab('referrals');
           if (m === 'staff') onNavigateTab('dashboard');
         }} />
       </section>
