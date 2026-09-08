@@ -55,7 +55,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     }
 
     if (!password.trim()) {
-      setErrorMessage('Please enter your clinical security PIN / password.');
+      setErrorMessage('Please enter your security PIN / password.');
       return;
     }
 
@@ -147,7 +147,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
-                    Clinical Security PIN / Password
+                     Security PIN / Password
                   </label>
                   <button
                     type="button"
@@ -234,7 +234,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   </>
                 ) : (
                   <>
-                    <span>Sign In to Clinical Command Center</span>
+                    <span>Sign In </span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
