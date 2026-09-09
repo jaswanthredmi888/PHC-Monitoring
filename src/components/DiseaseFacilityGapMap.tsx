@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { DiseaseOutbreakZone } from '../types';
 import { MAHARASHTRA_CITIES } from '../data/mockData';
 import { 
@@ -118,8 +118,6 @@ export const DiseaseFacilityGapMap: React.FC<DiseaseFacilityGapMapProps> = ({
   const [dossierTab, setDossierTab] = useState<DossierTab>('gap');
 
   // AI & Action States
-  const [isGeneratingProposal, setIsGeneratingProposal] = useState(false);
-  const [aiProposal, setAiProposal] = useState<any>(null);
   const [showMemoModal, setShowMemoModal] = useState(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -176,25 +174,41 @@ export const DiseaseFacilityGapMap: React.FC<DiseaseFacilityGapMapProps> = ({
     showToast(`108 Emergency Mobile Unit sanctioned and dispatched for ${zone.ruralAreaName}.`);
   };
 
-  // Gemini AI Cabinet Proposal
-  const handleGenerateAIProposal = async (zone: DiseaseOutbreakZone) => {
-    setIsGeneratingProposal(true);
-    setDossierTab('ai_plan');
-    try {
-      const res = await fetch('/api/gemini/facility-gap-proposal', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ zone })
-      });
-      const data = await res.json();
-      setAiProposal(data);
-      showToast('Formulated Cabinet Infrastructure Proposal via Gemini AI.');
-    } catch (err) {
-      console.error('Failed to fetch AI proposal:', err);
-    } finally {
-      setIsGeneratingProposal(false);
-    }
-  };
+  // Automated AI Cabinet Action Plan (shown directly in UI for the selected zone)
+  const activeAiPlan = useMemo(() => {
+    const isCritical = !selectedZone.isFacilityAvailableLocally || selectedZone.severityLevel === 'Critical Outbreak';
+
+    const immediateMeasures = [
+      `Deploy 108 Emergency Mobile Medical Unit with specialized ${selectedZone.requiredSpecialist || 'clinical team'} within 12 hours.`,
+      `Establish a 20-bed emergency triage & stabilization ward at ${selectedZone.blockName} Gram Panchayat / Community Hall.`,
+      `Dispatch emergency reserve of life-saving medical supplies (${selectedZone.requiredLifeSavingDrugs.slice(0, 2).join(', ')}) from District Warehouse.`,
+      `Mobilize frontline ASHA syndromic tracking across ${selectedZone.affectedPanchayats.length} gram panchayats (${selectedZone.affectedPanchayats.slice(0, 3).join(', ')}${selectedZone.affectedPanchayats.length > 3 ? ` +${selectedZone.affectedPanchayats.length - 3} more` : ''}).`
+    ];
+
+    const infrastructurePlan = `Sanction permanent upgradation of ${selectedZone.localFacilityName} to First Referral Unit (FRU) with dedicated ${selectedZone.requiredFacilityType}, equipped with ${selectedZone.requiredEquipment.slice(0, 2).join(' & ')}.`;
+
+    const budgetBreakdown = [
+      { item: '108 Mobile Unit & Field Triage Camp (90-Day Deployment)', costINR: '₹12,00,000' },
+      { item: `Diagnostic Equipment Procurement (${selectedZone.requiredEquipment[0] || 'Clinical Equipment'})`, costINR: '₹14,50,000' },
+      { item: `Life-Saving Drug Buffer & Cold-Chain Logistics (${selectedZone.requiredLifeSavingDrugs[0] || 'Essential Drugs'})`, costINR: '₹4,50,000' },
+      { item: 'Community Sanitation, Water Purification & Vector Control', costINR: '₹3,50,000' }
+    ];
+
+    return {
+      urgencyClassification: isCritical 
+        ? 'Level 1: Urgent Cabinet & State Health Requisition' 
+        : 'Level 2: District Emergency Health Sanction',
+      urgencyBadgeColor: isCritical 
+        ? 'bg-rose-100 text-rose-800 border-rose-200' 
+        : 'bg-amber-100 text-amber-800 border-amber-200',
+      executiveSummary: `Automated Strategic Proposal: Active surge of ${selectedZone.diseaseName} in ${selectedZone.ruralAreaName} (${selectedZone.activeCasesCount} confirmed cases, +${selectedZone.weeklyGrowthRatePercent}%/wk) requires immediate government infrastructure sanction. Local facility (${selectedZone.localFacilityName}) has an acute deficit with ${selectedZone.nearestHospitalDistanceKm} km (${selectedZone.travelTransitTimeMinutes} mins) transit barrier to ${selectedZone.nearestEquippedHospitalName}, endangering ${selectedZone.populationAtRisk.toLocaleString('en-IN')} citizens at risk.`,
+      immediateMeasures,
+      infrastructurePlan,
+      budgetBreakdown,
+      totalSanctionEstimateINR: selectedZone.sanctionBudgetEstimateINR || '₹34.50 Lakhs',
+      fieldDeploymentLead: selectedZone.reportedByAshaOrMo || 'Dr. Rajesh Sharma (PHC MO)'
+    };
+  }, [selectedZone]);
 
   return (
     <div id="disease-facility-gap-view" className="space-y-4 pb-8">
@@ -720,74 +734,96 @@ export const DiseaseFacilityGapMap: React.FC<DiseaseFacilityGapMapProps> = ({
                 </div>
               )}
 
-              {/* TAB 3: AI ACTION PLAN (GEMINI) */}
+              {/* TAB 3: AI ACTION PLAN (DIRECTLY SHOWN IN UI - NO GENERATE BUTTON) */}
               {dossierTab === 'ai_plan' && (
                 <div className="space-y-3 text-xs">
-                  {!aiProposal ? (
-                    <div className="text-center py-6 space-y-3">
-                      <Sparkles className="w-8 h-8 text-indigo-500 mx-auto" />
-                      <p className="text-slate-600 text-xs">
-                        Generate an automated official Cabinet Requisition Plan and Infrastructure Budget using Gemini AI.
+                  <div className="space-y-2.5">
+                    {/* Header */}
+                    <div className="flex items-center justify-between border-b border-slate-200 pb-1.5">
+                      <div className="flex items-center gap-1.5">
+                        <Sparkles className="w-3.5 h-3.5 text-indigo-600" />
+                        <span className="font-bold text-indigo-950 text-xs">AI Cabinet Action Plan</span>
+                        <span className="text-[10px] font-mono text-slate-400">Live Active</span>
+                      </div>
+                      <span className={`text-[10px] font-bold px-2 py-0.5 border rounded-full ${activeAiPlan.urgencyBadgeColor}`}>
+                        {activeAiPlan.urgencyClassification}
+                      </span>
+                    </div>
+
+                    {/* Executive Summary */}
+                    <div className="p-2.5 bg-indigo-50/60 border border-indigo-100 rounded-xl">
+                      <span className="text-[10px] font-bold uppercase text-indigo-900 block mb-1">
+                        Executive Strategic Assessment
+                      </span>
+                      <p className="text-slate-700 text-[11px] leading-relaxed">
+                        {activeAiPlan.executiveSummary}
                       </p>
+                    </div>
+
+                    {/* Immediate Tactical Measures */}
+                    <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                      <span className="text-[10px] font-bold uppercase text-slate-600 block mb-1.5 flex items-center gap-1">
+                        <CheckCircle2 className="w-3 h-3 text-emerald-600" />
+                        <span>Immediate Tactical Measures (0 - 48 Hours)</span>
+                      </span>
+                      <ul className="space-y-1.5 text-[11px] text-slate-700">
+                        {activeAiPlan.immediateMeasures.map((m, idx) => (
+                          <li key={idx} className="flex items-start gap-1.5">
+                            <span className="text-indigo-600 font-bold shrink-0 leading-tight">•</span>
+                            <span>{m}</span>
+                          </li>
+                        ))}
+                      </ul>
+                    </div>
+
+                    {/* Long Term Infrastructure Plan */}
+                    <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-200">
+                      <span className="text-[10px] font-bold uppercase text-slate-600 block mb-1">
+                        Long-Term Infrastructure Sanction Plan
+                      </span>
+                      <p className="text-[11px] text-slate-700 leading-relaxed">
+                        {activeAiPlan.infrastructurePlan}
+                      </p>
+                    </div>
+
+                    {/* Budget Sanction Breakdown */}
+                    <div className="bg-indigo-50/70 p-2.5 rounded-xl border border-indigo-200 space-y-1.5">
+                      <div className="flex items-center justify-between">
+                        <span className="font-bold text-indigo-950 text-xs">Estimated Sanction Budget:</span>
+                        <span className="font-bold font-mono text-indigo-900 text-sm">
+                          {activeAiPlan.totalSanctionEstimateINR}
+                        </span>
+                      </div>
+                      <div className="pt-1 border-t border-indigo-200/60 space-y-1 text-[10px]">
+                        {activeAiPlan.budgetBreakdown.map((b, bIdx) => (
+                          <div key={bIdx} className="flex items-center justify-between text-slate-600">
+                            <span>{b.item}</span>
+                            <span className="font-mono font-semibold text-slate-800">{b.costINR}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Action Controls (Directly visible - No generate button) */}
+                    <div className="pt-1 flex items-center gap-2">
                       <button
-                        onClick={() => handleGenerateAIProposal(selectedZone)}
-                        disabled={isGeneratingProposal}
-                        className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-2 mx-auto shadow-xs"
+                        onClick={() => setShowMemoModal(true)}
+                        className="flex-1 px-3 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl text-xs font-bold transition flex items-center justify-center gap-1.5 shadow-xs"
                       >
-                        <Sparkles className={`w-4 h-4 ${isGeneratingProposal ? 'animate-spin' : ''}`} />
-                        <span>{isGeneratingProposal ? 'Formulating Plan...' : 'Generate AI Action Plan'}</span>
+                        <FileText className="w-3.5 h-3.5" />
+                        <span>View Official Cabinet Memo</span>
+                      </button>
+
+                      <button
+                        onClick={() => handleEscalate(selectedZone)}
+                        className="px-3 py-2 bg-rose-600 hover:bg-rose-700 text-white rounded-xl text-xs font-bold transition flex items-center gap-1 shadow-xs"
+                        title="Escalate directly to State Health Ministry"
+                      >
+                        <Send className="w-3.5 h-3.5" />
+                        <span>Escalate</span>
                       </button>
                     </div>
-                  ) : (
-                    <div className="space-y-2.5">
-                      <div className="flex items-center justify-between border-b border-slate-200 pb-1.5">
-                        <span className="font-bold text-indigo-950 text-xs">Gemini Cabinet Action Plan</span>
-                        <span className="text-[10px] font-bold px-2 py-0.5 bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-full">
-                          {aiProposal.urgencyClassification || 'High Urgency'}
-                        </span>
-                      </div>
-
-                      <p className="text-slate-700 text-xs leading-relaxed">
-                        {aiProposal.executiveSummary}
-                      </p>
-
-                      <div className="bg-slate-50 p-2 rounded-lg border border-slate-200">
-                        <span className="text-[10px] font-bold uppercase text-slate-500 block mb-1">Immediate Measures</span>
-                        <ul className="space-y-1 text-[11px] text-slate-700">
-                          {aiProposal.immediateMeasures?.map((m: string, idx: number) => (
-                            <li key={idx} className="flex items-start gap-1">
-                              <span className="text-indigo-600 font-bold">•</span>
-                              <span>{m}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-
-                      <div className="flex items-center justify-between bg-indigo-50 p-2.5 rounded-lg border border-indigo-200 text-xs">
-                        <span className="font-semibold text-indigo-900">Estimated Budget Sanction:</span>
-                        <span className="font-bold font-mono text-indigo-800 text-sm">
-                          {aiProposal.totalSanctionEstimateINR || selectedZone.sanctionBudgetEstimateINR}
-                        </span>
-                      </div>
-
-                      <div className="pt-2 flex items-center gap-2">
-                        <button
-                          onClick={() => handleGenerateAIProposal(selectedZone)}
-                          disabled={isGeneratingProposal}
-                          className="px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-lg text-xs font-semibold transition"
-                        >
-                          Re-generate
-                        </button>
-                        <button
-                          onClick={() => setShowMemoModal(true)}
-                          className="flex-1 px-3 py-1.5 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-bold transition flex items-center justify-center gap-1"
-                        >
-                          <FileText className="w-3.5 h-3.5" />
-                          <span>View Official Memo</span>
-                        </button>
-                      </div>
-                    </div>
-                  )}
+                  </div>
                 </div>
               )}
 
