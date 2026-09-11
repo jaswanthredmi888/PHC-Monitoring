@@ -57,8 +57,10 @@ export const Header: React.FC<HeaderProps> = ({
             <AppLogo size="md" />
             <div>
               <div className="flex items-center gap-2">
-                <h1 className="text-lg sm:text-xl font-bold tracking-tight text-slate-900">
-                  PHC Monitoring
+                <h1 className="text-lg sm:text-xl font-bold tracking-tight">
+                  <span className="text-orange-500">SEVA</span>
+                  <span className="text-green-600">Link</span>{' '}
+                  <span className="text-black">Monitoring</span>
                 </h1>
               </div>
               <p className="text-[11px] font-medium text-slate-500 hidden sm:block">

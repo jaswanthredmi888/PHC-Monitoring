@@ -223,7 +223,11 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-3">
           <div className="flex items-center gap-2.5">
             <AppLogo size="xs" />
-            <span className="font-semibold text-slate-800">PHC Monitoring</span>
+            <span className="font-semibold">
+              <span className="text-orange-500">SEVA</span>
+              <span className="text-green-600">Link</span>{' '}
+              <span className="text-black">Monitoring</span>
+            </span>
             <span>•</span>
             <span>Clinical Command Center</span>
             <span>•</span>

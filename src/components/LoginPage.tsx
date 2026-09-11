@@ -102,8 +102,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 </div>
               </div>
               <div>
-                <h1 className="text-xl sm:text-2xl font-bold tracking-tight text-slate-900">
-                  PHC Monitoring System
+                <h1 className="text-xl sm:text-2xl font-bold tracking-tight">
+                  <span className="text-orange-500">SEVA</span>
+                  <span className="text-green-600">Link</span>{' '}
+                  <span className="text-black">Monitoring</span>
                 </h1>
                 <p className="text-xs sm:text-sm text-slate-500 mt-1">
                   Primary Health Center Command & Surveillance Portal
@@ -296,7 +298,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-slate-500 gap-2">
           <div className="flex items-center gap-2">
             <AppLogo size="xs" />
-            <span className="font-semibold text-slate-700">PHC Monitoring</span>
+            <span className="font-semibold">
+              <span className="text-orange-500">SEVA</span>
+              <span className="text-green-600">Link</span>{' '}
+              <span className="text-black">Monitoring</span>
+            </span>
             <span>•</span>
             <span>Government of Maharashtra Health Registry</span>
           </div>

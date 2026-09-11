@@ -34,8 +34,10 @@ export const AppLogo: React.FC<AppLogoProps> = ({
       </div>
       {showText && (
         <div className="flex flex-col">
-          <span className="text-sm font-bold tracking-tight text-slate-900 leading-tight">
-            PHC Monitoring
+          <span className="text-sm font-bold tracking-tight leading-tight">
+            <span className="text-orange-500">SEVA</span>
+            <span className="text-green-600">Link</span>{' '}
+            <span className="text-black">Monitoring</span>
           </span>
           <span className="text-[10px] font-semibold text-blue-600 font-mono">
             Health Portal
