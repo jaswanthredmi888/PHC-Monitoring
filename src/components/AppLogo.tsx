@@ -39,8 +39,8 @@ export const AppLogo: React.FC<AppLogoProps> = ({
             <span className="text-green-600">Link</span>{' '}
             <span className="text-black">Monitoring</span>
           </span>
-          <span className="text-[10px] font-semibold text-blue-600 font-mono">
-            Health Portal
+          <span className="text-[10px] font-semibold text-slate-500">
+            Rural HealthCare Eco System - Maharashtra
           </span>
         </div>
       )}

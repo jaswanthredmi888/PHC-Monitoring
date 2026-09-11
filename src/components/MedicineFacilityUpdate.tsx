@@ -184,7 +184,7 @@ export const MedicineFacilityUpdate: React.FC<MedicineFacilityUpdateProps> = ({
             Medicine & Hospital Facility Management
           </h2>
           <p className="text-xs text-slate-500 mt-0.5">
-            Real-time stock ledger and operational infrastructure status for Kanchipuram Primary Health Center.
+            Real-time stock ledger and operational infrastructure status for Maharashtra Primary Health Center.
           </p>
         </div>
 
@@ -412,7 +412,7 @@ export const MedicineFacilityUpdate: React.FC<MedicineFacilityUpdateProps> = ({
                   <div className="pt-3 mt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-mono">
                     <span>Updated: {med.lastUpdated}</span>
                     <button
-                      onClick={() => showToast(`Restock requisition sent for ${med.name} to Tamil Nadu Medical Services Corporation (TNMSC).`)}
+                      onClick={() => showToast(`Restock requisition sent for ${med.name} to Maharashtra Medical Goods Procurement Authority.`)}
                       className="text-blue-600 font-semibold hover:underline"
                     >
                       Order Supply
@@ -426,7 +426,7 @@ export const MedicineFacilityUpdate: React.FC<MedicineFacilityUpdateProps> = ({
           {/* Bottom Broadcast Bar */}
           <div className="p-4 rounded-xl bg-white border border-slate-200 shadow-xs flex flex-col sm:flex-row items-center justify-between gap-3">
             <div className="text-xs text-slate-600">
-              Total <strong>{medicines.length} essential pharmaceuticals</strong> tracked under Kanchipuram PHC cold-chain & dispensary.
+              Total <strong>{medicines.length} essential pharmaceuticals</strong> tracked under Maharashtra PHC cold-chain & dispensary.
             </div>
             <button
               onClick={() => showToast('Medicine inventory synchronized with State Health Dashboard.')}

@@ -82,7 +82,7 @@ export const TeleConsultant: React.FC<TeleConsultantProps> = ({
       patientGender: (newBooking.patientGender as any) || 'Female',
       patientPhone: newBooking.patientPhone || '+91 98400 00000',
       abhaId: `33-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}-${Math.floor(1000 + Math.random() * 9000)}`,
-      village: newBooking.village || 'Kanchipuram Block',
+      village: newBooking.village || 'Maharashtra Block',
       sector: newBooking.sector || 'CHANDANAGIRI SECTOR',
       source: (newBooking.source as any) || 'ASHA Field Worker',
       bookedBy: newBooking.bookedBy || 'PHC Staff',
@@ -115,7 +115,7 @@ export const TeleConsultant: React.FC<TeleConsultantProps> = ({
             Real-Time Doctor Tele-Consultant Hub
           </h2>
           <p className="text-xs md:text-sm text-pink-100 mt-1 max-w-2xl leading-relaxed">
-            Incoming live video and audio consultation requests booked by ASHA Field Workers and Rural Patients across Kanchipuram sectors. Connect patients directly to on-duty PHC Medical Officers.
+            Incoming live video and audio consultation requests booked by ASHA Field Workers and Rural Patients across Maharashtra sectors. Connect patients directly to on-duty PHC Medical Officers.
           </p>
         </div>
 

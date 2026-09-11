@@ -105,7 +105,7 @@ export const DoctorConsultationRoom: React.FC<DoctorConsultationRoomProps> = ({
       status: 'Completed',
       doctorNotes,
       prescriptions,
-      referralDetails: isReferralNeeded ? referralNotes || 'Referred to Kanchipuram District Hospital for obstetric review' : undefined
+      referralDetails: isReferralNeeded ? referralNotes || 'Referred to Maharashtra District Hospital for obstetric review' : undefined
     };
 
     onCompleteConsultation(updated);

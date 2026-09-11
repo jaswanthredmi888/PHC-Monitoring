@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </h1>
               </div>
               <p className="text-[11px] font-medium text-slate-500 hidden sm:block">
-                Pune District Primary Health Center Hub • Maharashtra 
+                Rural HealthCare Eco System - Maharashtra
               </p>
             </div>
           </div>
