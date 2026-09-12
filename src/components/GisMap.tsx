@@ -38,6 +38,8 @@ interface GisMapProps {
   selectedSector: SectorData;
   onSelectSector: (sector: SectorData) => void;
   onInitiateTeleconsult: (patientName?: string, sector?: string) => void;
+  onNavigateToCitizens?: () => void;
+  onNavigateToCadre?: () => void;
 }
 
 export type HeatmapFilter = 'outbreaks' | 'maternal' | 'vaccine' | 'all' | 'disabled';
@@ -53,6 +55,7 @@ function MapViewController({
 }) {
   const map = useMap();
   useEffect(() => {
+    map.scrollWheelZoom.disable();
     map.flyTo(center, zoom, {
       duration: 1.2,
       easeLinearity: 0.25
@@ -122,7 +125,9 @@ export const GisMap: React.FC<GisMapProps> = ({
   sectors,
   selectedSector,
   onSelectSector,
-  onInitiateTeleconsult
+  onInitiateTeleconsult,
+  onNavigateToCitizens,
+  onNavigateToCadre
 }) => {
   const [selectedCityId, setSelectedCityId] = useState<string>('pune');
   const [heatmapFilter, setHeatmapFilter] = useState<HeatmapFilter>('outbreaks');
@@ -335,7 +340,7 @@ export const GisMap: React.FC<GisMapProps> = ({
         <MapContainer
           center={[selectedSector.coordinates.lat, selectedSector.coordinates.lng]}
           zoom={zoomLevel}
-          scrollWheelZoom={true}
+          scrollWheelZoom={false}
           style={{ width: '100%', height: '100%' }}
           zoomControl={false}
         >
@@ -591,9 +596,22 @@ export const GisMap: React.FC<GisMapProps> = ({
           </div>
 
           {/* Assigned Citizens */}
-          <div className="p-4 rounded-lg bg-slate-50 border border-slate-100">
-            <div className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">
-              Assigned Citizens
+          <div 
+            onClick={() => onNavigateToCitizens && onNavigateToCitizens()}
+            className={`p-4 rounded-lg bg-slate-50 border border-slate-100 transition-all ${
+              onNavigateToCitizens ? 'hover:bg-blue-50/50 hover:border-blue-200 cursor-pointer group' : ''
+            }`}
+            title={onNavigateToCitizens ? "Click to view and manage citizens in register" : undefined}
+          >
+            <div className="flex items-center justify-between">
+              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono">
+                Assigned Citizens
+              </span>
+              {onNavigateToCitizens && (
+                <span className="text-[10px] text-blue-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                  View &darr;
+                </span>
+              )}
             </div>
             <div className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
               {selectedSector.assignedCitizens}
@@ -605,9 +623,19 @@ export const GisMap: React.FC<GisMapProps> = ({
         <div className="space-y-3">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between text-xs gap-1">
             <span className="text-slate-500 font-medium">DESIGNATED ASHA SEVIKA:</span>
-            <span className="font-bold text-slate-900">
-              {selectedSector.designatedAsha} ({selectedSector.ashaPhone})
-            </span>
+            <div className="flex items-center gap-2">
+              <span className="font-bold text-slate-900">
+                {selectedSector.designatedAsha} ({selectedSector.ashaPhone})
+              </span>
+              {onNavigateToCadre && (
+                <button
+                  onClick={() => onNavigateToCadre()}
+                  className="text-[11px] font-bold text-blue-600 hover:text-blue-800 underline ml-1"
+                >
+                  Manage Cadre &darr;
+                </button>
+              )}
+            </div>
           </div>
 
           <div className="p-3.5 rounded-lg bg-slate-50 border border-slate-200 text-xs sm:text-sm text-slate-800 font-normal leading-relaxed">

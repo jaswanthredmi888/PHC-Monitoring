@@ -1,4 +1,4 @@
-export type TabType = 'dashboard' | 'teleconsult' | 'inventory' | 'referrals' | 'disease-gap' | 'highrisk';
+export type TabType = 'dashboard' | 'teleconsult' | 'appointments' | 'inventory' | 'referrals' | 'disease-gap' | 'highrisk';
 
 export interface DiseaseOutbreakZone {
   id: string;
@@ -266,4 +266,72 @@ export interface ReferralItem {
   followUpNotes?: string;
   remindersSentCount: number;
   lastReminderSentAt?: string;
+}
+
+export type AppointmentPriority = 'Emergency' | 'High-Risk Maternal' | 'Child / Pediatric' | 'Elderly / Geriatric' | 'General / Routine';
+
+export type AppointmentStatus = 'Scheduled' | 'Checked-In' | 'In Consultation' | 'Completed' | 'Delayed' | 'Missed';
+
+export type BookingSource = 'SEVA-Lite (ASHA)' | 'SEVA-Lite (ANM)' | 'Patient Self-Portal' | 'Facility Walk-in' | 'Tele-Consult Escalation';
+
+export interface AppointmentItem {
+  id: string; // e.g. 'APT-2026-1042'
+  tokenNumber: string; // e.g. 'EM-01', 'ANC-04', 'Q-12'
+  patientName: string;
+  patientAge: number;
+  patientGender: 'Female' | 'Male' | 'Other';
+  patientPhone: string;
+  abhaId: string; // e.g. '33-4921-8842-1092'
+  village: string;
+  sector: string;
+  
+  // Clinical Purpose & Department
+  department: 'Obstetrics & Gynecology' | 'Pediatrics & Immunization' | 'General Medicine' | 'Geriatrics & NCD' | 'Emergency & Trauma' | 'Dental & AYUSH';
+  purposeOfVisit: string; // e.g. 'Maternal ANC 3rd Trimester Check & USG'
+  assignedDoctor: string; // e.g. 'Dr. Ananya Sharma, MD'
+  facilityName: string; // e.g. 'Paud Central Primary Health Center'
+  consultationRoom: string; // e.g. 'Room 1 (OPD)', 'Room 2 (Maternal & ANC)', 'Emergency Bay'
+  
+  // Medical History & Clinical Baseline
+  medicalHistory: {
+    chronicConditions: string[];
+    allergies: string[];
+    ongoingMedications: string[];
+    previousVisitsCount: number;
+    vitalsAtBooking?: {
+      bp?: string;
+      pulse?: number;
+      temp?: string;
+      weightKg?: number;
+      spo2?: number;
+      bloodSugar?: string;
+      hemoglobin?: number;
+    };
+  };
+
+  // Priority & Risk Classification
+  priority: AppointmentPriority;
+  isHighRisk: boolean;
+  priorityReason?: string;
+
+  // Booking Meta (Who and When booked)
+  bookingSource: BookingSource;
+  bookedBy: string; // e.g. 'Sunita Patil (ASHA ID: MH-ASHA-1104)'
+  bookedAt: string; // '10 Sep 2026, 04:30 PM'
+  
+  // Appointment Schedule
+  appointmentDate: string; // '2026-09-11'
+  appointmentTimeSlot: string; // '09:30 AM - 10:00 AM'
+  estimatedWaitMinutes?: number;
+  
+  // Queue & Progress Lifecycle
+  status: AppointmentStatus;
+  checkInTime?: string;
+  consultationStartTime?: string;
+  completedTime?: string;
+  isDelayed: boolean;
+  delayedMinutes?: number;
+  delayReason?: string;
+  missedReason?: string;
+  clinicalNotes?: string;
 }

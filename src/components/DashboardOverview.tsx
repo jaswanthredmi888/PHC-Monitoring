@@ -2,9 +2,9 @@ import React from 'react';
 import { SectorData, AshaWorker, TabType } from '../types';
 import { MetricCards } from './MetricCards';
 import { GisMap } from './GisMap';
+import { CitizenAshaManagement } from './CitizenAshaManagement';
 import { AnalyticsCharts } from './AnalyticsCharts';
-import { AshaLeaderboard } from './AshaLeaderboard';
-import { ShieldAlert, ArrowRight, AlertTriangle } from 'lucide-react';
+import { DashboardQuickActions } from './DashboardQuickActions';
 
 interface DashboardOverviewProps {
   sectors: SectorData[];
@@ -13,6 +13,9 @@ interface DashboardOverviewProps {
   ashaWorkers: AshaWorker[];
   onNavigateTab: (tab: TabType) => void;
   onInitiateTeleconsult: (patientName?: string, sector?: string) => void;
+  pendingTeleconsultsCount?: number;
+  criticalDeficitsCount?: number;
+  pendingReferralsCount?: number;
 }
 
 export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
@@ -21,73 +24,81 @@ export const DashboardOverview: React.FC<DashboardOverviewProps> = ({
   onSelectSector,
   ashaWorkers,
   onNavigateTab,
-  onInitiateTeleconsult
+  onInitiateTeleconsult,
+  pendingTeleconsultsCount = 3,
+  criticalDeficitsCount = 6,
+  pendingReferralsCount = 5
 }) => {
+  const [managementView, setManagementView] = React.useState<'citizens' | 'cadre'>('citizens');
+
+  const scrollToManagement = (view: 'citizens' | 'cadre') => {
+    setManagementView(view);
+    setTimeout(() => {
+      const element = document.getElementById('citizen-asha-management-section');
+      if (element) {
+        element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        element.classList.add('ring-2', 'ring-blue-500', 'ring-offset-2');
+        setTimeout(() => {
+          element.classList.remove('ring-2', 'ring-blue-500', 'ring-offset-2');
+        }, 1600);
+      }
+    }, 50);
+  };
+
   return (
     <div className="space-y-6 pb-12">
-      
-      {/* Urgent Epidemic Facility Gap Escalation Banner */}
-      <div className="bg-gradient-to-r from-rose-900 via-slate-900 to-rose-950 text-white rounded-2xl p-4 sm:p-5 shadow-sm border border-rose-800 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-        <div className="flex items-start sm:items-center gap-3.5">
-          <div className="w-10 h-10 rounded-xl bg-rose-500/20 border border-rose-500/40 flex items-center justify-center text-rose-400 shrink-0">
-            <ShieldAlert className="w-5 h-5 animate-pulse" />
-          </div>
-          <div>
-            <div className="flex items-center gap-2 flex-wrap">
-              <span className="text-xs font-bold uppercase tracking-wider text-rose-400 font-mono">
-                State Epidemic Alert
-              </span>
-              <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-rose-600 text-white">
-                6 Rural Deficits Detected
-              </span>
-            </div>
-            <p className="text-xs sm:text-sm text-slate-200 mt-0.5">
-              Outbreaks in Mulshi (Dengue), Otur (Cholera) & Harsul (Sickle Cell) lack local curing facilities. Escalation required.
-            </p>
-          </div>
-        </div>
+      {/* 1. Quick Action Hub for all Tabs */}
+      <section>
+        <DashboardQuickActions
+          onNavigateTab={onNavigateTab}
+          pendingTeleconsultsCount={pendingTeleconsultsCount}
+          criticalDeficitsCount={criticalDeficitsCount}
+          pendingReferralsCount={pendingReferralsCount}
+        />
+      </section>
 
-        <button
-          id="btn-goto-disease-gap"
-          onClick={() => onNavigateTab('disease-gap')}
-          className="px-4 py-2 rounded-xl bg-rose-600 hover:bg-rose-500 text-white text-xs font-bold transition flex items-center gap-2 shrink-0 shadow-xs"
-        >
-          <span>Open Disease & Facility Gap Map</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
-      </div>
-
-      {/* 1. Top Metrics Section */}
+      {/* 2. Top Metrics Section */}
       <section>
         <MetricCards onCardClick={(m) => {
-          if (m === 'referrals' || m === 'highrisk') onNavigateTab('referrals');
-          if (m === 'staff') onNavigateTab('dashboard');
+          if (m === 'citizens') {
+            scrollToManagement('citizens');
+          } else if (m === 'staff') {
+            scrollToManagement('cadre');
+          } else if (m === 'referrals' || m === 'highrisk') {
+            onNavigateTab('referrals');
+          }
         }} />
       </section>
 
-      {/* 2. Live GIS Epidemiological Heatmap & Selected Sector Card */}
+      {/* 3. Live GIS Epidemiological Heatmap & Selected Sector Card */}
       <section>
         <GisMap
           sectors={sectors}
           selectedSector={selectedSector}
           onSelectSector={onSelectSector}
           onInitiateTeleconsult={onInitiateTeleconsult}
+          onNavigateToCitizens={() => scrollToManagement('citizens')}
+          onNavigateToCadre={() => scrollToManagement('cadre')}
         />
       </section>
 
-      {/* 3. Analytical Charts */}
+      {/* 4. Management of Citizen and ASHA/ANM by Organised List */}
+      <section>
+        <CitizenAshaManagement
+          sectors={sectors}
+          ashaWorkers={ashaWorkers}
+          onInitiateTeleconsult={onInitiateTeleconsult}
+          onNavigateTab={onNavigateTab}
+          activeView={managementView}
+          onViewChange={setManagementView}
+        />
+      </section>
+
+      {/* 5. Analytical Charts */}
       <section>
         <AnalyticsCharts />
-      </section>
-
-      {/* 4. ASHA Worker Performance & Live Fields Leaderboard */}
-      <section>
-        <AshaLeaderboard
-          workers={ashaWorkers}
-          onCallAsha={(w) => console.log('Calling ASHA', w.name)}
-          onViewAshaDetails={(w) => console.log('Viewing ASHA', w.name)}
-        />
       </section>
     </div>
   );
 };
+

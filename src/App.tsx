@@ -17,6 +17,7 @@ import { TeleConsultant } from './components/TeleConsultant';
 import { MedicineFacilityUpdate } from './components/MedicineFacilityUpdate';
 import { ReferralFollowUp } from './components/ReferralFollowUp';
 import { DiseaseFacilityGapMap } from './components/DiseaseFacilityGapMap';
+import { AppointmentQueueTab } from './components/AppointmentQueue/AppointmentQueueTab';
 import { LoginPage } from './components/LoginPage';
 import { AppLogo } from './components/AppLogo';
 
@@ -180,6 +181,15 @@ export default function App() {
             onSelectSector={setSelectedSector}
             ashaWorkers={ashaWorkers}
             onNavigateTab={setActiveTab}
+            onInitiateTeleconsult={handleInitiateTeleconsultFromAnywhere}
+            pendingTeleconsultsCount={pendingTeleconsults}
+            criticalDeficitsCount={criticalDeficitsCount}
+            pendingReferralsCount={pendingReferralsCount}
+          />
+        )}
+
+        {activeTab === 'appointments' && (
+          <AppointmentQueueTab
             onInitiateTeleconsult={handleInitiateTeleconsultFromAnywhere}
           />
         )}

@@ -1,6 +1,6 @@
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
-import { ReferralItem } from '../types';
+import { ReferralItem, AppointmentItem } from '../types';
 
 /**
  * Export filtered referrals registry to a formatted official PDF document
@@ -311,3 +311,224 @@ export const exportSingleReferralSlipPDF = (referral: ReferralItem): void => {
 
   doc.save(`Referral_Slip_${referral.id}.pdf`);
 };
+
+/**
+ * Directly generate and download official PHC Appointment Receipt & Queue Token PDF
+ */
+export const exportAppointmentReceiptPDF = (appointment: AppointmentItem): void => {
+  const doc = new jsPDF({
+    orientation: 'portrait',
+    unit: 'mm',
+    format: 'a4'
+  });
+
+  const isEmergency = appointment.priority === 'Emergency';
+  const isMaternal = appointment.priority === 'High-Risk Maternal';
+
+  // 1. Official Header Top Band
+  doc.setFillColor(15, 23, 42); // slate-900
+  doc.rect(0, 0, 210, 26, 'F');
+
+  doc.setTextColor(255, 255, 255);
+  doc.setFontSize(13);
+  doc.setFont('helvetica', 'bold');
+  doc.text('NATIONAL HEALTH MISSION - GOVERNMENT OF MAHARASHTRA', 105, 11, { align: 'center' });
+
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(219, 234, 254); // blue-100
+  doc.text('PUBLIC HEALTH DEPARTMENT • PRIMARY HEALTHCARE OUTPATIENT APPOINTMENT SLIP', 105, 17, { align: 'center' });
+  doc.text('SEVA Digital Healthcare Network • Electronic Queue & Triage Gateway', 105, 22, { align: 'center' });
+
+  // 2. Facility & Generation Banner
+  doc.setFillColor(241, 245, 249);
+  doc.rect(14, 30, 182, 8, 'F');
+  doc.setDrawColor(203, 213, 225);
+  doc.rect(14, 30, 182, 8, 'S');
+
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(30, 41, 59);
+  doc.text(`Facility: ${appointment.facilityName}`, 18, 35.5);
+
+  const downloadTime = new Date().toLocaleDateString('en-IN', {
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(71, 85, 105);
+  doc.text(`Generated: ${downloadTime}`, 192, 35.5, { align: 'right' });
+
+  // 3. Prominent Queue Token & Timing Box
+  doc.setFillColor(isEmergency ? 255 : 248, isEmergency ? 241 : 250, isEmergency ? 242 : 252);
+  doc.rect(14, 41, 182, 25, 'F');
+  doc.setDrawColor(isEmergency ? 244 : 203, isEmergency ? 63 : 213, isEmergency ? 94 : 225);
+  doc.setLineWidth(isEmergency ? 0.8 : 0.4);
+  doc.rect(14, 41, 182, 25, 'S');
+  doc.setLineWidth(0.2); // reset
+
+  // Token Number
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(isEmergency ? 225 : 71, isEmergency ? 29 : 85, isEmergency ? 72 : 105);
+  doc.text('QUEUE TOKEN NUMBER', 20, 47);
+
+  doc.setFontSize(22);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(isEmergency ? 225 : 15, isEmergency ? 29 : 23, isEmergency ? 72 : 42);
+  doc.text(`#${appointment.tokenNumber}`, 20, 56);
+
+  // Priority Pill text
+  doc.setFontSize(9);
+  doc.setFont('helvetica', 'bold');
+  if (isEmergency) {
+    doc.setTextColor(225, 29, 72);
+    doc.text(`[ ${appointment.priority.toUpperCase()} - IMMEDIATE ATTENTION ]`, 20, 62);
+  } else if (isMaternal) {
+    doc.setTextColor(180, 83, 9);
+    doc.text(`[ ${appointment.priority.toUpperCase()} ]`, 20, 62);
+  } else {
+    doc.setTextColor(37, 99, 235);
+    doc.text(`[ Priority: ${appointment.priority} ]`, 20, 62);
+  }
+
+  // Right column: Schedule slot & Booking Date/Time
+  doc.setFontSize(8.5);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(71, 85, 105);
+  doc.text('APPOINTMENT DETAILS', 110, 47);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(15, 23, 42);
+  doc.text(`Appointment Date & Slot:`, 110, 52);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(30, 58, 138);
+  doc.text(`${appointment.appointmentDate} (${appointment.appointmentTimeSlot})`, 147, 52);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setTextColor(15, 23, 42);
+  doc.text(`Booking Date & Time:`, 110, 57);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(15, 23, 42);
+  doc.text(`${appointment.bookedAt}`, 147, 57);
+
+  doc.setFont('helvetica', 'normal');
+  doc.text(`Attending Doctor:`, 110, 62);
+  doc.setFont('helvetica', 'bold');
+  doc.text(`${appointment.assignedDoctor.split(',')[0]}`, 147, 62);
+
+  // 4. Patient Identification Table
+  autoTable(doc, {
+    startY: 69,
+    head: [['1. PATIENT IDENTIFICATION & DEMOGRAPHICS', 'REGISTERED DETAILS']],
+    body: [
+      ['Patient Full Name', appointment.patientName],
+      ['Age / Gender', `${appointment.patientAge} Years / ${appointment.patientGender}`],
+      ['Contact Phone Number', appointment.patientPhone],
+      ['Ayushman Bharat ID (ABHA)', appointment.abhaId],
+      ['Village / Health Sector', `${appointment.village}, Sector ${appointment.sector}`],
+      ['Queue Status', appointment.status === 'Checked-In' ? 'Checked-In (Waiting in Queue)' : appointment.status]
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: [30, 58, 138], fontSize: 8.5, fontStyle: 'bold' },
+    styles: { fontSize: 8, cellPadding: 2.2 },
+    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold', textColor: [51, 65, 85] } },
+    margin: { left: 14, right: 14 }
+  });
+
+  // 5. Clinical Department & Purpose of Visit
+  const currentY = (doc as any).lastAutoTable.finalY + 4;
+  autoTable(doc, {
+    startY: currentY,
+    head: [['2. CLINICAL DEPARTMENT & PURPOSE OF VISIT', 'CONSULTATION DETAILS']],
+    body: [
+      ['Clinical Department', appointment.department],
+      ['Attending Physician / Specialist', appointment.assignedDoctor],
+      ['Consultation Facility', appointment.facilityName],
+      ['Chief Complaint / Purpose of Visit', appointment.purposeOfVisit],
+      ['Priority / Triage Justification', appointment.priorityReason || 'Standard primary care consultation']
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: [15, 23, 42], fontSize: 8.5, fontStyle: 'bold' },
+    styles: { fontSize: 8, cellPadding: 2.2 },
+    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold', textColor: [51, 65, 85] } },
+    margin: { left: 14, right: 14 }
+  });
+
+  // 6. Medical History & Baseline Vitals
+  const vitalsY = (doc as any).lastAutoTable.finalY + 4;
+  const vitals = appointment.medicalHistory.vitalsAtBooking;
+  const vitalsStr = vitals 
+    ? `BP: ${vitals.bp || '--'} | Pulse: ${vitals.pulse ? vitals.pulse + ' bpm' : '--'} | SpO2: ${vitals.spo2 ? vitals.spo2 + '%' : '--'} | Temp: ${vitals.temp || '--'}${vitals.hemoglobin ? ' | Hb: ' + vitals.hemoglobin + 'g/dL' : ''}${vitals.bloodSugar ? ' | Sugar: ' + vitals.bloodSugar : ''}`
+    : 'No baseline vitals recorded at booking';
+
+  autoTable(doc, {
+    startY: vitalsY,
+    head: [['3. CLINICAL HISTORY & BASELINE VITALS', 'RECORDED STATUS']],
+    body: [
+      ['Recorded Baseline Vitals', vitalsStr],
+      ['Known Chronic Conditions', appointment.medicalHistory.chronicConditions.length > 0 ? appointment.medicalHistory.chronicConditions.join(', ') : 'None declared'],
+      ['Known Drug Allergies', appointment.medicalHistory.allergies.length > 0 ? appointment.medicalHistory.allergies.join(', ') : 'No known drug allergies'],
+      ['Ongoing Medications', appointment.medicalHistory.ongoingMedications.length > 0 ? appointment.medicalHistory.ongoingMedications.join(', ') : 'None']
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: [51, 65, 85], fontSize: 8.5, fontStyle: 'bold' },
+    styles: { fontSize: 8, cellPadding: 2.2 },
+    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold', textColor: [51, 65, 85] } },
+    margin: { left: 14, right: 14 }
+  });
+
+  // 7. Booking Audit Trail (Highlighting booking date & time)
+  const auditY = (doc as any).lastAutoTable.finalY + 4;
+  autoTable(doc, {
+    startY: auditY,
+    head: [['4. BOOKING AUDIT TRAIL', 'REGISTRATION METADATA']],
+    body: [
+      ['Booking Date & Time', appointment.bookedAt],
+      ['Appointment Slot', `${appointment.appointmentDate} (${appointment.appointmentTimeSlot})`],
+      ['Booked By', appointment.bookedBy],
+      ['Booking Source Channel', appointment.bookingSource],
+      ['Check-In Time at Facility', appointment.checkInTime || 'Pending patient arrival / check-in'],
+      ['Completion Time', appointment.completedTime || 'Consultation in progress or queued']
+    ],
+    theme: 'striped',
+    headStyles: { fillColor: [15, 23, 42], fontSize: 8.5, fontStyle: 'bold' },
+    styles: { fontSize: 8, cellPadding: 2.2 },
+    columnStyles: { 0: { cellWidth: 60, fontStyle: 'bold', textColor: [51, 65, 85] } },
+    margin: { left: 14, right: 14 }
+  });
+
+  // 8. Sign-off / Verification Stamp Simulation
+  const endY = (doc as any).lastAutoTable.finalY + 6;
+  doc.setFillColor(248, 250, 252);
+  doc.rect(14, endY, 182, 14, 'F');
+  doc.setDrawColor(226, 232, 240);
+  doc.rect(14, endY, 182, 14, 'S');
+
+  doc.setFontSize(8);
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(30, 41, 59);
+  doc.text('PATIENT INSTRUCTIONS & NDHM VERIFICATION:', 18, endY + 5);
+
+  doc.setFont('helvetica', 'normal');
+  doc.setFontSize(7.5);
+  doc.setTextColor(71, 85, 105);
+  doc.text(
+    'Please present this electronic slip at the PHC OPD Registration Counter upon arrival. Bring your ABHA/Aadhaar card.',
+    18,
+    endY + 9.5
+  );
+
+  doc.setFont('helvetica', 'bold');
+  doc.setTextColor(37, 99, 235);
+  doc.text(`Digital Security Stamp: MH-PHC-NDHM-VERIFIED • Token #${appointment.tokenNumber}`, 192, endY + 9.5, { align: 'right' });
+
+  // Save the PDF file directly
+  const safeName = appointment.patientName.replace(/[^a-zA-Z0-9]/g, '_');
+  const fileName = `Appointment_Slip_${appointment.tokenNumber}_${safeName}.pdf`;
+  doc.save(fileName);
+};
+
