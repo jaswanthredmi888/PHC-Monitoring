@@ -114,7 +114,7 @@ export const DailyRosterReportModal: React.FC<DailyRosterReportModalProps> = ({
               Daily Outpatient Appointment & Triage Roster
             </h2>
             <p className="text-xs font-medium text-slate-600 mt-0.5">
-              Rural HealthCare Eco System - Maharashtra • Directorate of Health Services (DHS)
+              Rural HealthCare System - Maharashtra • Directorate of Health Services (DHS)
             </p>
             <div className="flex flex-wrap items-center justify-center gap-3 mt-2 text-xs font-medium text-slate-700">
               <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full bg-slate-100 border border-slate-200">

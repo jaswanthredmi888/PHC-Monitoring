@@ -89,6 +89,8 @@ export interface TeleconsultationRequest {
   patientGender: 'Female' | 'Male' | 'Other';
   patientPhone: string;
   abhaId?: string;
+  district?: string;
+  taluka?: string;
   village: string;
   sector: string;
   source: 'ASHA Field Worker' | 'Direct Patient' | 'Sub-Center ANM';
@@ -97,6 +99,13 @@ export interface TeleconsultationRequest {
   urgency: 'Critical' | 'High' | 'Medium' | 'Routine';
   specialty: 'OB/GYN & Maternal' | 'Pediatrics' | 'General Physician' | 'Cardiology / Hypertension';
   symptoms: string;
+  isPregnant?: boolean;
+  pregnancyStage?: 'Not Pregnant' | '1st Trimester (Weeks 1-12)' | '2nd Trimester (Weeks 13-27)' | '3rd Trimester (Weeks 28-40+)' | 'Postpartum (0-6 Months)';
+  gestationalWeeks?: number;
+  gravidaPara?: string;
+  edd?: string;
+  maternalRiskFlags?: string[];
+  clinicalCategory?: string;
   pregnancyStatus?: string;
   vitals: {
     bloodPressure?: string;

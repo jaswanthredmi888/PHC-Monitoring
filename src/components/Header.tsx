@@ -19,9 +19,14 @@ import {
   ArrowRightLeft,
   CalendarClock,
   Menu,
-  X
+  X,
+  Sun,
+  Moon,
+  Globe,
+  Check
 } from 'lucide-react';
 import { AuthUser } from '../types';
+import { useThemeLanguage } from '../context/ThemeLanguageContext';
 
 interface HeaderProps {
   activeTab: TabType;
@@ -52,6 +57,7 @@ export const Header: React.FC<HeaderProps> = ({
 }) => {
   // Navigation Drawer state (closed by default)
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const { theme, setTheme, language, setLanguage, t } = useThemeLanguage();
 
   // Close drawer on Escape key and lock body scroll
   useEffect(() => {
@@ -76,25 +82,25 @@ export const Header: React.FC<HeaderProps> = ({
   const tabs = [
     {
       id: 'dashboard' as TabType,
-      label: 'Center Dashboard',
+      label: t.commandCenter,
       icon: Activity,
       iconColor: 'text-blue-600',
     },
     {
       id: 'appointments' as TabType,
-      label: 'Appointment & Queue',
+      label: t.opdQueue,
       icon: CalendarClock,
       iconColor: 'text-blue-600',
     },
     {
       id: 'inventory' as TabType,
-      label: 'Medicine & Facility Update',
+      label: t.medicineFacility,
       icon: Pill,
       iconColor: 'text-emerald-600',
     },
     {
       id: 'referrals' as TabType,
-      label: 'Referral & Follow-up',
+      label: t.referrals,
       icon: ArrowRightLeft,
       iconColor: 'text-amber-600',
       badge: pendingReferralsCount,
@@ -102,7 +108,7 @@ export const Header: React.FC<HeaderProps> = ({
     },
     {
       id: 'teleconsult' as TabType,
-      label: 'Tele-Consultations',
+      label: t.teleConsult,
       icon: Video,
       iconColor: 'text-indigo-600',
       badge: pendingTeleconsultsCount,
@@ -110,7 +116,7 @@ export const Header: React.FC<HeaderProps> = ({
     },
     {
       id: 'disease-gap' as TabType,
-      label: 'Disease & Facility Gap Map',
+      label: t.diseaseGap,
       icon: ShieldAlert,
       iconColor: 'text-rose-600',
       badge: criticalDeficitsCount,
@@ -148,7 +154,7 @@ export const Header: React.FC<HeaderProps> = ({
                 </h1>
               </div>
               <p className="text-[10px] font-medium text-slate-500 hidden sm:block">
-                Rural HealthCare Eco System - Maharashtra
+                {t.subtitle}
               </p>
             </div>
           </div>
@@ -158,7 +164,7 @@ export const Header: React.FC<HeaderProps> = ({
             {/* Sync Status Badge */}
             <div className="hidden sm:flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-slate-50 border border-slate-200 text-slate-700 text-xs font-medium">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span className="text-[10px] font-semibold text-slate-700">Synced</span>
+              <span className="text-[10px] font-semibold text-slate-700">{t.syncAll}</span>
               <button 
                 onClick={onRefreshSync}
                 title="Refresh Cloud Sync" 
@@ -168,7 +174,7 @@ export const Header: React.FC<HeaderProps> = ({
               </button>
             </div>
 
-            {/* Simulated Live Gateway Toggle */}
+            {/* Network Connection Indicator */}
             <button
               onClick={() => setIsOnline(!isOnline)}
               title={isOnline ? 'Online (Click to toggle offline mode)' : 'Offline (Click to toggle online mode)'}
@@ -181,12 +187,12 @@ export const Header: React.FC<HeaderProps> = ({
               {isOnline ? (
                 <>
                   <Wifi className="w-3 h-3 text-emerald-600" />
-                  <span className="hidden md:inline text-[10px] font-medium">Live Gateway</span>
+                  <span className="hidden md:inline text-[10px] font-semibold text-emerald-700">Online</span>
                 </>
               ) : (
                 <>
                   <WifiOff className="w-3 h-3 text-amber-600" />
-                  <span className="text-[10px] font-semibold">Offline</span>
+                  <span className="text-[10px] font-semibold">{t.workingOffline}</span>
                 </>
               )}
             </button>
@@ -366,7 +372,7 @@ export const Header: React.FC<HeaderProps> = ({
                         <span className="text-black">Monitoring</span>
                       </h2>
                       <p className="text-[10px] text-slate-500 font-medium">
-                        Rural HealthCare Eco System
+                        {t.subtitle}
                       </p>
                     </div>
                   </div>
@@ -404,7 +410,7 @@ export const Header: React.FC<HeaderProps> = ({
                 {/* Navigation Tabs in Drawer */}
                 <div className="flex-1 overflow-y-auto px-3 py-3 space-y-1">
                   <p className="px-2 pt-1 pb-1.5 text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                    Navigation Tabs
+                    {t.navigation}
                   </p>
                   {tabs.map((tab) => {
                     const Icon = tab.icon;
@@ -444,40 +450,107 @@ export const Header: React.FC<HeaderProps> = ({
                   })}
                 </div>
 
-                {/* Drawer Footer */}
-                <div className="p-3 border-t border-slate-200 bg-slate-50/60 space-y-2">
-                  <div className="flex items-center justify-between px-3 py-2 bg-white rounded-xl border border-slate-200 text-xs">
-                    <div className="flex items-center gap-2">
-                      {isOnline ? (
-                        <>
-                          <Wifi className="w-3.5 h-3.5 text-emerald-600" />
-                          <span className="text-slate-700 font-medium text-[11px]">Live Gateway Connected</span>
-                        </>
-                      ) : (
-                        <>
-                          <WifiOff className="w-3.5 h-3.5 text-amber-600" />
-                          <span className="text-amber-800 font-semibold text-[11px]">Working Offline</span>
-                        </>
-                      )}
+                {/* Drawer Footer: Theme Toggle & 4 Languages Switcher (DRAWER ONLY) */}
+                <div className="p-3.5 border-t border-slate-200 bg-slate-50/70 space-y-3">
+                  
+                  {/* 1. DARK MODE TOGGLE (DRAWER ONLY) */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between px-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono flex items-center gap-1.5">
+                        {theme === 'dark' ? <Moon className="w-3.5 h-3.5 text-blue-400" /> : <Sun className="w-3.5 h-3.5 text-amber-500" />}
+                        <span>{t.theme}</span>
+                      </span>
+                      <span className="text-[10px] font-bold text-slate-600">
+                        {theme === 'dark' ? t.darkMode : t.lightMode}
+                      </span>
                     </div>
-                    <button
-                      onClick={() => setIsOnline(!isOnline)}
-                      className="text-[10px] text-blue-600 hover:underline font-bold"
-                    >
-                      Toggle
-                    </button>
+
+                    <div className="grid grid-cols-2 gap-1.5 p-1 bg-slate-200/60 rounded-xl border border-slate-200">
+                      <button
+                        type="button"
+                        id="drawer-theme-light"
+                        onClick={() => setTheme('light')}
+                        className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer ${
+                          theme === 'light'
+                            ? 'bg-white text-slate-900 shadow-xs border border-slate-200/80 font-bold'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        <Sun className="w-3.5 h-3.5 text-amber-500" />
+                        <span>{t.lightMode}</span>
+                      </button>
+                      <button
+                        type="button"
+                        id="drawer-theme-dark"
+                        onClick={() => setTheme('dark')}
+                        className={`py-1.5 px-2 rounded-lg text-xs font-semibold flex items-center justify-center gap-1.5 transition cursor-pointer ${
+                          theme === 'dark'
+                            ? 'bg-slate-800 text-white shadow-xs border border-slate-700 font-bold'
+                            : 'text-slate-600 hover:text-slate-900'
+                        }`}
+                      >
+                        <Moon className="w-3.5 h-3.5 text-blue-400" />
+                        <span>{t.darkMode}</span>
+                      </button>
+                    </div>
                   </div>
 
+                  {/* 2. FOUR LANGUAGES SUPPORT: MARATHI, ENGLISH, HINDI, TAMIL (DRAWER ONLY) */}
+                  <div className="space-y-1.5">
+                    <div className="flex items-center justify-between px-1">
+                      <span className="text-[10px] font-bold uppercase tracking-wider text-slate-500 font-mono flex items-center gap-1.5">
+                        <Globe className="w-3.5 h-3.5 text-blue-600" />
+                        <span>{t.language}</span>
+                      </span>
+                      <span className="text-[10px] font-bold text-blue-700 bg-blue-100 px-2 py-0.5 rounded">
+                        {language.toUpperCase()}
+                      </span>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-1.5">
+                      {[
+                        { code: 'mr', label: 'मराठी', sub: 'Marathi' },
+                        { code: 'en', label: 'English', sub: 'English' },
+                        { code: 'hi', label: 'हिन्दी', sub: 'Hindi' },
+                        { code: 'ta', label: 'தமிழ்', sub: 'Tamil' },
+                      ].map((lang) => {
+                        const isSelected = language === lang.code;
+                        return (
+                          <button
+                            key={lang.code}
+                            type="button"
+                            id={`drawer-lang-${lang.code}`}
+                            onClick={() => setLanguage(lang.code as any)}
+                            className={`p-2 rounded-xl border text-left transition flex items-center justify-between group cursor-pointer ${
+                              isSelected
+                                ? 'bg-blue-50 border-blue-500 text-blue-950 font-bold ring-1 ring-blue-500 shadow-2xs'
+                                : 'bg-white border-slate-200 text-slate-700 hover:bg-slate-100/80'
+                            }`}
+                          >
+                            <div>
+                              <div className="text-xs font-bold leading-tight">{lang.label}</div>
+                              <div className="text-[9px] text-slate-400 font-normal">{lang.sub}</div>
+                            </div>
+                            {isSelected && (
+                              <Check className="w-3.5 h-3.5 text-blue-600 shrink-0" />
+                            )}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* 3. SIGN OUT */}
                   {onLogout && (
                     <button
                       onClick={() => {
                         setIsDrawerOpen(false);
                         onLogout();
                       }}
-                      className="w-full flex items-center justify-center gap-2 px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-bold border border-rose-200 hover:border-rose-300 transition"
+                      className="w-full flex items-center justify-center gap-2 px-3 py-2 text-rose-600 hover:bg-rose-50 rounded-xl text-xs font-bold border border-rose-200 hover:border-rose-300 transition cursor-pointer mt-1"
                     >
                       <LogOut className="w-3.5 h-3.5" />
-                      <span>Sign Out of Portal</span>
+                      <span>{t.signOut}</span>
                     </button>
                   )}
                 </div>

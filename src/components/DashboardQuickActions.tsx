@@ -9,6 +9,7 @@ import {
   ArrowUpRight,
   Zap
 } from 'lucide-react';
+import { useThemeLanguage } from '../context/ThemeLanguageContext';
 
 interface DashboardQuickActionsProps {
   onNavigateTab: (tab: TabType) => void;
@@ -27,13 +28,14 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
   lowStockMedicinesCount = 3,
   activeAppointmentsCount = 14
 }) => {
+  const { t } = useThemeLanguage();
+
   const quickActions = [
     {
       id: 'appointments' as TabType,
-      title: 'Appointment & Queue',
-      countLabel: `${activeAppointmentsCount} Scheduled`,
+      title: t.opdQueue,
+      countLabel: `${activeAppointmentsCount} ${t.scheduledLabel}`,
       icon: CalendarClock,
-      // Different background colors per card
       cardBg: 'bg-blue-50/90 hover:bg-blue-100/90 border-blue-200 text-blue-950',
       iconBox: 'bg-blue-600 text-white shadow-xs',
       badgeBg: 'bg-blue-100/80 text-blue-800 border-blue-200/70',
@@ -41,8 +43,8 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
     },
     {
       id: 'inventory' as TabType,
-      title: 'Medicine & Facility',
-      countLabel: lowStockMedicinesCount > 0 ? `${lowStockMedicinesCount} Low Stock` : 'Supplies OK',
+      title: t.medicineFacility,
+      countLabel: lowStockMedicinesCount > 0 ? `${lowStockMedicinesCount} ${t.lowStockAlert}` : t.suppliesOk,
       icon: Pill,
       cardBg: 'bg-emerald-50/90 hover:bg-emerald-100/90 border-emerald-200 text-emerald-950',
       iconBox: 'bg-emerald-600 text-white shadow-xs',
@@ -51,8 +53,8 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
     },
     {
       id: 'referrals' as TabType,
-      title: 'Referral & Follow-up',
-      countLabel: `${pendingReferralsCount} Transfers`,
+      title: t.referrals,
+      countLabel: `${pendingReferralsCount} ${t.transfersCountLabel}`,
       icon: ArrowRightLeft,
       cardBg: 'bg-amber-50/90 hover:bg-amber-100/90 border-amber-200 text-amber-950',
       iconBox: 'bg-amber-600 text-white shadow-xs',
@@ -61,8 +63,8 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
     },
     {
       id: 'teleconsult' as TabType,
-      title: 'Tele-Consultations',
-      countLabel: pendingTeleconsultsCount > 0 ? `${pendingTeleconsultsCount} Waiting` : 'Active',
+      title: t.teleConsult,
+      countLabel: pendingTeleconsultsCount > 0 ? `${pendingTeleconsultsCount} ${t.waitingConsults}` : t.online,
       icon: Video,
       cardBg: 'bg-purple-50/90 hover:bg-purple-100/90 border-purple-200 text-purple-950',
       iconBox: 'bg-purple-600 text-white shadow-xs',
@@ -71,8 +73,8 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
     },
     {
       id: 'disease-gap' as TabType,
-      title: 'Disease & Gap Map',
-      countLabel: `${criticalDeficitsCount} Critical Gaps`,
+      title: t.diseaseGap,
+      countLabel: `${criticalDeficitsCount} ${t.criticalDeficits}`,
       icon: ShieldAlert,
       cardBg: 'bg-rose-50/90 hover:bg-rose-100/90 border-rose-200 text-rose-950',
       iconBox: 'bg-rose-600 text-white shadow-xs',
@@ -87,10 +89,10 @@ export const DashboardQuickActions: React.FC<DashboardQuickActionsProps> = ({
       <div className="flex items-center justify-between px-1">
         <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
           <Zap className="w-3.5 h-3.5 text-amber-500 fill-amber-500" />
-          <span>Quick Actions</span>
+          <span>{t.quickActions}</span>
         </div>
         <span className="text-[11px] text-slate-400 font-medium">
-          One-click tab navigation
+          {t.appName}
         </span>
       </div>
 

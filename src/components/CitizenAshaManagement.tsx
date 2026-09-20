@@ -1,5 +1,6 @@
 import React, { useState, useMemo, useEffect } from 'react';
 import { SectorData, AshaWorker, TabType } from '../types';
+import { useThemeLanguage } from '../context/ThemeLanguageContext';
 import { 
   Users, 
   UserCheck, 
@@ -375,6 +376,7 @@ export const CitizenAshaManagement: React.FC<CitizenAshaManagementProps> = ({
   activeView: controlledActiveView,
   onViewChange
 }) => {
+  const { t } = useThemeLanguage();
   // Main view tab: 'citizens' | 'cadre'
   const [internalView, setInternalView] = useState<'citizens' | 'cadre'>('citizens');
   const activeView = controlledActiveView || internalView;
@@ -488,10 +490,10 @@ export const CitizenAshaManagement: React.FC<CitizenAshaManagementProps> = ({
         <div>
           <div className="flex items-center gap-2">
             <h2 className="text-base font-bold text-slate-900 tracking-tight">
-              Citizen & Health Worker Management
+              {t.citizenManagementTitle}
             </h2>
             <span className="px-2 py-0.5 rounded-full text-[10px] font-bold bg-blue-100 text-blue-800 border border-blue-200/80">
-              Live Register
+              {t.liveRegister}
             </span>
           </div>
           <p className="text-xs text-slate-500 mt-0.5">
@@ -508,14 +510,14 @@ export const CitizenAshaManagement: React.FC<CitizenAshaManagementProps> = ({
                 handleSetView('citizens');
                 setFilterAshaWorkerId(null);
               }}
-              className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'citizens'
                   ? 'bg-white text-blue-700 shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <Users className="w-3.5 h-3.5" />
-              <span>Citizens</span>
+              <span>{t.citizensTab}</span>
               <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">
                 {citizens.length}
               </span>
@@ -527,14 +529,14 @@ export const CitizenAshaManagement: React.FC<CitizenAshaManagementProps> = ({
                 handleSetView('cadre');
                 setFilterAshaWorkerId(null);
               }}
-              className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 ${
+              className={`px-3.5 py-1.5 rounded-lg transition-all flex items-center gap-1.5 cursor-pointer ${
                 activeView === 'cadre'
                   ? 'bg-white text-blue-700 shadow-2xs font-bold'
                   : 'text-slate-600 hover:text-slate-900'
               }`}
             >
               <UserCheck className="w-3.5 h-3.5" />
-              <span>ASHA & ANM Workers</span>
+              <span>{t.ashaWorkersTab}</span>
               <span className="px-1.5 py-0.2 rounded-full text-[10px] bg-slate-100 text-slate-700 font-mono">
                 {cadreList.length}
               </span>
@@ -552,8 +554,8 @@ export const CitizenAshaManagement: React.FC<CitizenAshaManagementProps> = ({
             type="text"
             placeholder={
               activeView === 'cadre'
-                ? 'Search worker name, sector, sub-center...'
-                : 'Search citizen name, ABHA ID, village, ASHA...'
+                ? t.searchAshaPlaceholder
+                : t.searchCitizenPlaceholder
             }
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}

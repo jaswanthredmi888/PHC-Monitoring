@@ -40,7 +40,7 @@ export const AppLogo: React.FC<AppLogoProps> = ({
             <span className="text-black">Monitoring</span>
           </span>
           <span className="text-[10px] font-semibold text-slate-500">
-            Rural HealthCare Eco System - Maharashtra
+            Rural HealthCare System - Maharashtra
           </span>
         </div>
       )}

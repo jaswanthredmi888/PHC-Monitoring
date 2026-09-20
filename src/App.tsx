@@ -20,18 +20,13 @@ import { DiseaseFacilityGapMap } from './components/DiseaseFacilityGapMap';
 import { AppointmentQueueTab } from './components/AppointmentQueue/AppointmentQueueTab';
 import { LoginPage } from './components/LoginPage';
 import { AppLogo } from './components/AppLogo';
+import { useThemeLanguage } from './context/ThemeLanguageContext';
 
 export default function App() {
-  // Authentication State
-  const [currentUser, setCurrentUser] = useState<AuthUser | null>(() => {
-    try {
-      const saved = localStorage.getItem('phc_auth_user');
-      if (saved) return JSON.parse(saved);
-    } catch (e) {
-      // ignore
-    }
-    return null;
-  });
+  const { t } = useThemeLanguage();
+
+  // Authentication State: By default first login should ask
+  const [currentUser, setCurrentUser] = useState<AuthUser | null>(null);
 
   const [activeTab, setActiveTab] = useState<TabType>('dashboard');
   const [sectors, setSectors] = useState<SectorData[]>(INITIAL_SECTORS);
@@ -237,7 +232,7 @@ export default function App() {
             <span className="text-black">Monitoring</span>
           </span>
           <span className="mx-2">•</span>
-          <span>Rural HealthCare Eco System - Maharashtra</span>
+          <span>{t.subtitle}</span>
         </div>
       </footer>
 

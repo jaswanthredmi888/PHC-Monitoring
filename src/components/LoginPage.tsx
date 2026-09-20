@@ -2,24 +2,19 @@ import React, { useState } from 'react';
 import { AuthUser } from '../types';
 import { DEMO_USERS } from '../data/mockData';
 import { AppLogo } from './AppLogo';
+import { useThemeLanguage, Language } from '../context/ThemeLanguageContext';
 import { 
   ShieldCheck, 
   Lock, 
   Mail, 
   User, 
-  KeyRound, 
   Eye, 
   EyeOff, 
   ArrowRight, 
-  CheckCircle2, 
   AlertCircle, 
-  Building2, 
-  Activity, 
-  PhoneCall, 
   HelpCircle,
-  Stethoscope,
   X,
-  Radio
+  Globe
 } from 'lucide-react';
 
 interface LoginPageProps {
@@ -27,6 +22,7 @@ interface LoginPageProps {
 }
 
 export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
+  const { t, language, setLanguage } = useThemeLanguage();
   const [selectedDemoUser, setSelectedDemoUser] = useState<AuthUser>(DEMO_USERS[0]);
   const [emailOrId, setEmailOrId] = useState(DEMO_USERS[0].email);
   const [password, setPassword] = useState('••••••••••');
@@ -50,12 +46,12 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     setErrorMessage(null);
 
     if (!emailOrId.trim()) {
-      setErrorMessage('Please enter your Health Personnel Email or Employee Code.');
+      setErrorMessage(t.emailOrIdLabel);
       return;
     }
 
     if (!password.trim()) {
-      setErrorMessage('Please enter your security PIN / password.');
+      setErrorMessage(t.passwordLabel);
       return;
     }
 
@@ -63,7 +59,6 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
 
     setTimeout(() => {
       setIsLoading(false);
-      // Find matching demo user or construct auth user
       const matched = DEMO_USERS.find(
         u => u.email.toLowerCase() === emailOrId.toLowerCase() || u.employeeCode.toLowerCase() === emailOrId.toLowerCase()
       );
@@ -84,8 +79,44 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
     }, 450);
   };
 
+  const languages: { code: Language; label: string }[] = [
+    { code: 'mr', label: 'मराठी' },
+    { code: 'en', label: 'English' },
+    { code: 'hi', label: 'हिन्दी' },
+    { code: 'ta', label: 'தமிழ்' }
+  ];
+
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 flex flex-col justify-between selection:bg-blue-600 selection:text-white relative">
+
+      {/* Top Bar with Language Selector */}
+      <div className="w-full bg-white border-b border-slate-200 px-4 py-2.5 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <AppLogo size="sm" />
+          <span className="font-bold text-xs sm:text-sm text-slate-800 tracking-tight">
+            {t.appName}
+          </span>
+        </div>
+
+        {/* Global Language Selector */}
+        <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200">
+          <Globe className="w-3.5 h-3.5 text-slate-500 ml-1.5 mr-0.5" />
+          {languages.map((l) => (
+            <button
+              key={l.code}
+              type="button"
+              onClick={() => setLanguage(l.code)}
+              className={`px-2 py-1 rounded-lg text-xs font-semibold transition cursor-pointer ${
+                language === l.code
+                  ? 'bg-blue-600 text-white shadow-xs'
+                  : 'text-slate-600 hover:text-slate-900 hover:bg-slate-200/60'
+              }`}
+            >
+              {l.label}
+            </button>
+          ))}
+        </div>
+      </div>
 
       {/* Main Login Card Center */}
       <div className="flex-1 flex items-center justify-center px-4 py-8 sm:py-12">
@@ -107,8 +138,8 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   <span className="text-green-600">Link</span>{' '}
                   <span className="text-black">Monitoring</span>
                 </h1>
-                <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                  Rural HealthCare Eco System - Maharashtra
+                <p className="text-xs sm:text-sm text-slate-500 mt-1 font-medium">
+                  {t.loginSubtitle}
                 </p>
               </div>
             </div>
@@ -127,7 +158,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               {/* Official Identifier / Email */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
-                  Official Email or Employee ID
+                  {t.emailOrIdLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -139,7 +170,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     required
                     value={emailOrId}
                     onChange={(e) => setEmailOrId(e.target.value)}
-                    placeholder="doctor@phc.gov.in or MH-PHC-4012"
+                    placeholder={t.emailPlaceholder}
                     className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-900 placeholder-slate-400 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                   />
                 </div>
@@ -149,14 +180,14 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               <div className="space-y-1.5">
                 <div className="flex items-center justify-between">
                   <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
-                     Security PIN / Password
+                    {t.passwordLabel}
                   </label>
                   <button
                     type="button"
                     onClick={() => setShowHelpModal(true)}
-                    className="text-[11px] text-blue-600 hover:text-blue-700 font-medium"
+                    className="text-[11px] text-blue-600 hover:text-blue-700 font-medium cursor-pointer"
                   >
-                    Forgot PIN?
+                    {t.forgotPin}
                   </button>
                 </div>
                 <div className="relative">
@@ -175,7 +206,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                   <button
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
-                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600"
+                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 cursor-pointer"
                     title={showPassword ? 'Hide password' : 'Show password'}
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
@@ -186,7 +217,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
               {/* Role / Duty Assignment */}
               <div className="space-y-1.5">
                 <label className="block text-xs font-bold uppercase tracking-wider text-slate-600">
-                  Duty Designation
+                  {t.dutyDesignationLabel}
                 </label>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-slate-400">
@@ -198,10 +229,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     onChange={(e) => setSelectedRole(e.target.value)}
                     className="w-full pl-9 pr-3 py-2 bg-slate-50 border border-slate-200 rounded-xl text-xs sm:text-sm text-slate-800 focus:bg-white focus:outline-hidden focus:ring-2 focus:ring-blue-600 focus:border-transparent transition"
                   >
-                    <option value="Medical Officer (In-Charge)">Medical Officer (In-Charge)</option>
-                    <option value="Tele-Consultant Specialist">Tele-Consultant Specialist</option>
-                    <option value="ASHA Field Supervisor">ASHA Field Supervisor / ANM</option>
-                    <option value="District Epidemiologist">District Epidemiologist (IDSP)</option>
+                    <option value="Medical Officer (In-Charge)">{t.roleMedicalOfficer}</option>
+                    <option value="Tele-Consultant Specialist">{t.roleTeleConsultant}</option>
+                    <option value="ASHA Field Supervisor">{t.roleAshaSupervisor}</option>
+                    <option value="District Epidemiologist">{t.roleEpidemiologist}</option>
                   </select>
                 </div>
               </div>
@@ -215,10 +246,10 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                     onChange={(e) => setRememberMe(e.target.checked)}
                     className="w-3.5 h-3.5 text-blue-600 rounded border-slate-300 focus:ring-blue-500"
                   />
-                  <span>Remember this clinical terminal</span>
+                  <span>{t.rememberTerminal}</span>
                 </label>
                 <span className="text-[11px] font-mono text-emerald-600 font-semibold flex items-center gap-1">
-                  <ShieldCheck className="w-3.5 h-3.5" /> 256-Bit SSL
+                  <ShieldCheck className="w-3.5 h-3.5" /> {t.secureEncryption}
                 </span>
               </div>
 
@@ -232,11 +263,11 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                 {isLoading ? (
                   <>
                     <span className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin"></span>
-                    <span>Verifying Clinical Credentials...</span>
+                    <span>{t.authenticating}</span>
                   </>
                 ) : (
                   <>
-                    <span>Sign In </span>
+                    <span>{t.enterPortalButton}</span>
                     <ArrowRight className="w-4 h-4" />
                   </>
                 )}
@@ -248,9 +279,9 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <div className="pt-4 border-t border-slate-100 space-y-2.5">
               <div className="flex items-center justify-between">
                 <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                  Quick Demo Access (Select Staff)
+                  {t.quickDemoLoginTitle}
                 </span>
-                <span className="text-[10px] text-blue-600 font-semibold">1-Click Sign In</span>
+                <span className="text-[10px] text-blue-600 font-semibold">1-Click</span>
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
@@ -261,7 +292,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
                       key={user.id}
                       type="button"
                       onClick={() => handleSelectDemoUser(user)}
-                      className={`text-left p-2.5 rounded-xl border text-xs transition flex items-center gap-2.5 ${
+                      className={`text-left p-2.5 rounded-xl border text-xs transition flex items-center gap-2.5 cursor-pointer ${
                         isSelected
                           ? 'bg-blue-50/80 border-blue-300 ring-1 ring-blue-300 text-slate-900'
                           : 'bg-slate-50 border-slate-200 hover:bg-slate-100 text-slate-700'
@@ -302,7 +333,7 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <span className="text-black">Monitoring</span>
           </span>
           <span className="mx-2">•</span>
-          <span>Rural HealthCare Eco System - Maharashtra</span>
+          <span>{t.subtitle}</span>
         </div>
       </footer>
 
@@ -313,35 +344,30 @@ export const LoginPage: React.FC<LoginPageProps> = ({ onLogin }) => {
             <div className="flex items-center justify-between border-b border-slate-100 pb-3">
               <div className="flex items-center gap-2 text-slate-900 font-bold text-sm">
                 <HelpCircle className="w-4 h-4 text-blue-600" />
-                <span>PHC IT Desk & Support</span>
+                <span>{t.helpModalTitle}</span>
               </div>
               <button 
                 onClick={() => setShowHelpModal(false)}
-                className="text-slate-400 hover:text-slate-600 p-1"
+                className="text-slate-400 hover:text-slate-600 p-1 cursor-pointer"
               >
                 <X className="w-4 h-4" />
               </button>
             </div>
 
             <div className="text-xs text-slate-600 space-y-3 leading-relaxed">
-              <p>
-                If you have forgotten your clinical security PIN or your employee code is not recognized:
-              </p>
+              <p>{t.helpDescription}</p>
               <div className="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5 font-mono text-[11px] text-slate-700">
                 <p><strong>District Nodal Officer:</strong> 020-2612-4011</p>
                 <p><strong>Toll-Free Health Support:</strong> 104 / 108</p>
                 <p><strong>Support Email:</strong> phc-support@maharashtra.gov.in</p>
               </div>
-              <p className="text-[11px] text-slate-500">
-                For rapid testing, you can use any of the pre-configured clinical profiles in the Quick Demo Access section.
-              </p>
             </div>
 
             <button
               onClick={() => setShowHelpModal(false)}
-              className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition"
+              className="w-full py-2 bg-slate-900 hover:bg-slate-800 text-white rounded-xl text-xs font-bold transition cursor-pointer"
             >
-              Close Help Window
+              {t.close}
             </button>
           </div>
         </div>

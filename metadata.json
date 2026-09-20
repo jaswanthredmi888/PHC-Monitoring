@@ -1,6 +1,6 @@
 {
   "name": "SEVALink Monitoring",
-  "description": "Rural HealthCare Eco System - Maharashtra",
+  "description": "Rural HealthCare System - Maharashtra",
   "requestFramePermissions": ["camera", "microphone", "geolocation"],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

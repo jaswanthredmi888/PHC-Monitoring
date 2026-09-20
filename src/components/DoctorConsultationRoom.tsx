@@ -131,9 +131,25 @@ export const DoctorConsultationRoom: React.FC<DoctorConsultationRoomProps> = ({
                   {consultation.urgency} Urgency
                 </span>
               </div>
-              <p className="text-xs text-slate-400 font-mono">
-                Source: {consultation.bookedBy} ({consultation.village}) • Assigned: {consultation.doctorAssigned}
-              </p>
+              <div className="flex flex-wrap items-center gap-2 mt-0.5">
+                <p className="text-xs text-slate-400 font-mono">
+                  Source: {consultation.bookedBy} ({consultation.village}) • Assigned: {consultation.doctorAssigned}
+                </p>
+                {consultation.pregnancyStatus && (
+                  <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                    consultation.isPregnant || consultation.pregnancyStatus.toLowerCase().includes('pregnant') && !consultation.pregnancyStatus.toLowerCase().includes('not')
+                      ? 'bg-pink-900/80 text-pink-200 border border-pink-700'
+                      : 'bg-slate-800 text-slate-300 border border-slate-700'
+                  }`}>
+                    {consultation.pregnancyStatus}
+                  </span>
+                )}
+                {consultation.edd && (
+                  <span className="text-[10px] text-pink-300 font-mono">
+                    EDD: {consultation.edd}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 

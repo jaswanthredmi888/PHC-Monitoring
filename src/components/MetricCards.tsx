@@ -1,5 +1,6 @@
 import React from 'react';
 import { Users, ShieldCheck, ArrowRightLeft, TrendingUp } from 'lucide-react';
+import { useThemeLanguage } from '../context/ThemeLanguageContext';
 
 interface MetricCardsProps {
   onCardClick?: (metric: string) => void;
@@ -7,6 +8,8 @@ interface MetricCardsProps {
 }
 
 export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referralsCount = 8 }) => {
+  const { t } = useThemeLanguage();
+
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
       
@@ -19,7 +22,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
       >
         <div className="flex items-start justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono">
-            Assigned Citizens
+            {t.citizensCountLabel}
           </span>
           <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600 group-hover:bg-blue-600 group-hover:text-white transition-colors">
             <Users className="w-4 h-4" />
@@ -28,12 +31,12 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
 
         <div className="mt-3">
           <div className="text-2xl sm:text-3xl font-bold text-slate-900 tracking-tight">
-            1,240
+            140
           </div>
           <div className="text-xs font-medium text-emerald-600 mt-1 flex items-center justify-between">
-            <span>98.6% Database coverage</span>
+            <span>{t.coverageStat}</span>
             <span className="text-[10px] text-blue-600 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-              Manage &rarr;
+              {t.manageLink}
             </span>
           </div>
         </div>
@@ -48,7 +51,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
       >
         <div className="flex items-start justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono">
-            Active ASHA Staff
+            {t.activeAshaCountLabel}
           </span>
           <div className="w-9 h-9 rounded-lg bg-emerald-50 flex items-center justify-center text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-colors">
             <ShieldCheck className="w-4 h-4" />
@@ -62,10 +65,10 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
           <div className="text-xs font-medium text-emerald-700 mt-1 flex items-center justify-between">
             <div className="flex items-center gap-1.5">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
-              <span>10 Live in field now</span>
+              <span>{t.liveInFieldStat}</span>
             </div>
             <span className="text-[10px] text-emerald-700 font-bold opacity-0 group-hover:opacity-100 transition-opacity">
-              Manage &rarr;
+              {t.manageLink}
             </span>
           </div>
         </div>
@@ -78,7 +81,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
       >
         <div className="flex items-start justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-blue-600 font-mono">
-            Referral & Follow-up
+            {t.referrals}
           </span>
           <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
             <ArrowRightLeft className="w-4 h-4" />
@@ -90,7 +93,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
             {referralsCount}
           </div>
           <div className="text-xs font-medium text-blue-600 mt-1">
-            Grassroots hospital referrals
+            {t.grassrootsHospitalReferrals}
           </div>
         </div>
       </div>
@@ -102,7 +105,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
       >
         <div className="flex items-start justify-between">
           <span className="text-[11px] font-bold uppercase tracking-wider text-slate-500 font-mono">
-            Block Immunization
+            {t.blockImmunization}
           </span>
           <div className="w-9 h-9 rounded-lg bg-blue-50 flex items-center justify-center text-blue-600">
             <TrendingUp className="w-4 h-4" />
@@ -114,7 +117,7 @@ export const MetricCards: React.FC<MetricCardsProps> = ({ onCardClick, referrals
             94.2%
           </div>
           <div className="text-xs font-medium text-blue-600 mt-1">
-            National Target: 95.0%
+            {t.nationalTargetStat}
           </div>
         </div>
       </div>
