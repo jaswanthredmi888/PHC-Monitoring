@@ -1,1 +1,1675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Healthcare Access for Rural & Underserved Communities</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
+            background: #000000;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .main-container {
+            display: flex;
+            gap: 30px;
+            justify-content: center;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            max-width: 1200px;
+        }
+
+        .info-panel {
+            width: 400px;
+            background: linear-gradient(135deg, #7f487a 0%, #9d5d95 100%);
+            border-radius: 20px;
+            padding: 40px 35px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            color: #ffffff;
+        }
+
+        .info-panel h1 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #ffffff;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .info-panel .subtitle {
+            font-size: 15px;
+            color: #ecf0f1;
+            margin-bottom: 30px;
+            text-align: center;
+            font-weight: 500;
+        }
+
+        .info-section {
+            margin-bottom: 25px;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 18px;
+            border-radius: 12px;
+            border-left: 4px solid #2f0e2a;
+        }
+
+        .info-section-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #2f0e2a;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-section ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .info-section li {
+            font-size: 14px;
+            color: #ecf0f1;
+            margin: 8px 0;
+            padding-left: 8px;
+            position: relative;
+        }
+
+        .info-section li::before {
+            content: "✓";
+            color: #2ecc71;
+            font-weight: bold;
+            margin-right: 8px;
+        }
+
+        .info-section ol {
+            padding-left: 20px;
+            margin: 0;
+        }
+
+        .info-section ol li {
+            font-size: 14px;
+            color: #ecf0f1;
+            margin: 8px 0;
+        }
+
+        .info-section ol li::before {
+            content: none;
+        }
+
+        .test-credentials {
+            font-size: 13px;
+            color: #ecf0f1;
+            background: rgba(52, 152, 219, 0.2);
+            padding: 10px;
+            border-radius: 6px;
+            margin-top: 8px;
+        }
+
+        @media (max-width: 900px) {
+            .main-container {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .info-panel {
+                width: 100%;
+                max-width: 380px;
+            }
+        }
+
+        .phone-container {
+            width: 380px;
+            background: linear-gradient(145deg, #4c354a, #1a202c);
+            border-radius: 35px;
+            padding: 15px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5),
+                        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+            border: 3px solid #995e94;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 15px;
+            color: #fff;
+            font-size: 11px;
+            background: #1a202c;
+            border-radius: 15px 15px 0 0;
+            margin-bottom: 5px;
+        }
+
+        .status-left, .status-right {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .screen {
+            width: 100%;
+            height: 520px;
+            background: #000000;
+            border-radius: 10px;
+            padding: 20px 15px;
+            overflow-y: auto;
+            box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.8);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .screen::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .screen::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        .screen::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 3px;
+        }
+
+        .screen-content {
+            color: #22c55e;
+            font-size: 15px;
+            line-height: 1.7;
+            animation: fadeIn 0.3s ease;
+            width: 100%;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .screen-title {
+            color: #fbbf24;
+            font-size: 17px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .screen-subtitle {
+            color: #22c55e;
+            font-size: 14px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .divider {
+            color: #22c55e;
+            margin: 10px 0;
+            text-align: center;
+        }
+
+        .input-field {
+            color: #ffffff;
+            font-size: 16px;
+            letter-spacing: 4px;
+            border-bottom: 2px solid #22c55e;
+            padding: 8px 0;
+            margin: 10px 0;
+            display: inline-block;
+            min-width: 200px;
+        }
+
+        .input-counter {
+            color: #666;
+            font-size: 12px;
+            margin-top: 5px;
+        }
+
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 16px;
+            background: #22c55e;
+            animation: blink 1s infinite;
+            margin-left: 2px;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .success-text {
+            color: #22c55e;
+        }
+
+        .error-text {
+            color: #ef4444;
+        }
+
+        .info-text {
+            color: #fbbf24;
+        }
+
+        .white-text {
+            color: #ffffff;
+        }
+
+        .menu-item {
+            margin: 12px 0;
+            padding: 8px;
+            background: rgba(34, 197, 94, 0.05);
+            border-left: 3px solid #22c55e;
+        }
+
+        .loading {
+            text-align: center;
+            color: #fbbf24;
+            font-size: 14px;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(251, 191, 36, 0.3);
+            border-top-color: #fbbf24;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        .keypad {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+
+        .key {
+            background: #a93fa0;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            height: 60px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .key:active {
+            transform: scale(0.95);
+            box-shadow: 0 2px 3px rgba(0, 0, 0, 0.3);
+        }
+
+        .key-letters {
+            font-size: 10px;
+            color: #94a3b8;
+            margin-top: 2px;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            margin-top: 15px;
+            padding: 0 10px;
+        }
+
+        .action-btn {
+            flex: 1;
+            height: 50px;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+        }
+
+        .call-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .end-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+
+        .secondary-buttons {
+            display: none;
+            gap: 8px;
+            margin-top: 10px;
+            padding: 0 10px;
+        }
+
+        .secondary-buttons.active {
+            display: flex;
+        }
+
+        .reply-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .back-btn {
+            background: #f97316;
+            color: white;
+        }
+
+        .cancel-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .test-info {
+            background: rgba(251, 191, 36, 0.1);
+            border: 1px solid #fbbf24;
+            border-radius: 5px;
+            padding: 10px;
+            margin: 10px 0;
+            font-size: 11px;
+            color: #fbbf24;
+        }
+
+        .pin-display {
+            font-size: 24px;
+            letter-spacing: 12px;
+            color: #ffffff;
+            text-align: center;
+            margin: 15px 0;
+        }
+
+        .details-box {
+            background: rgba(34, 197, 94, 0.05);
+            border: 1px solid #22c55e;
+            border-radius: 5px;
+            padding: 12px;
+            margin: 10px 0;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            margin: 6px 0;
+            font-size: 13px;
+        }
+
+        .detail-label {
+            color: #fbbf24;
+        }
+
+        .detail-value {
+            color: #ffffff;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="phone-container">
+            <div class="status-bar">
+                <div class="status-left">
+                    <span>Airtel</span>
+                    <span id="clock">12:00 PM</span>
+                </div>
+                <div class="status-right">
+                    <span>🔋 85%</span>
+                </div>
+            </div>
+
+            <div class="screen" id="screen">
+                <div class="screen-content" id="screenContent">
+                </div>
+            </div>
+
+            <div class="keypad">
+                <button class="key" onclick="inputDigit('1')">
+                    1
+                    <span class="key-letters"></span>
+                </button>
+                <button class="key" onclick="inputDigit('2')">
+                    2
+                    <span class="key-letters">ABC</span>
+                </button>
+                <button class="key" onclick="inputDigit('3')">
+                    3
+                    <span class="key-letters">DEF</span>
+                </button>
+                <button class="key" onclick="inputDigit('4')">
+                    4
+                    <span class="key-letters">GHI</span>
+                </button>
+                <button class="key" onclick="inputDigit('5')">
+                    5
+                    <span class="key-letters">JKL</span>
+                </button>
+                <button class="key" onclick="inputDigit('6')">
+                    6
+                    <span class="key-letters">MNO</span>
+                </button>
+                <button class="key" onclick="inputDigit('7')">
+                    7
+                    <span class="key-letters">PQRS</span>
+                </button>
+                <button class="key" onclick="inputDigit('8')">
+                    8
+                    <span class="key-letters">TUV</span>
+                </button>
+                <button class="key" onclick="inputDigit('9')">
+                    9
+                    <span class="key-letters">WXYZ</span>
+                </button>
+                <button class="key" onclick="inputDigit('*')">
+                    *
+                    <span class="key-letters">+</span>
+                </button>
+                <button class="key" onclick="inputDigit('0')">
+                    0
+                    <span class="key-letters"></span>
+                </button>
+                <button class="key" onclick="inputDigit('#')">
+                    #
+                    <span class="key-letters"></span>
+                </button>
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn call-btn" onclick="callAction()">📞 Call</button>
+                <button class="action-btn end-btn" onclick="endAction()">✖ End</button>
+            </div>
+
+            <div class="secondary-buttons" id="secondaryButtons">
+                <button class="action-btn reply-btn" onclick="replyAction()">Reply</button>
+                <button class="action-btn back-btn" onclick="backAction()">Back</button>
+                <button class="action-btn cancel-btn" onclick="cancelAction()">Cancel</button>
+            </div>
+        </div>
+
+        <div class="info-panel">
+            <h1>📱 USSD Healthcare Services</h1>
+            <div class="subtitle">Complete Healthcare Access for Rural & Underserved Communities</div>
+            
+            <div class="info-section">
+                <div class="info-section-title">🌐 Language Support</div>
+                <ul>
+                    <li>English</li>
+                    <li>हिंदी (Hindi)</li>
+                    <li>मराठी (Marathi)</li>
+                    <li>தமிழ் (Tamil)</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <div class="info-section-title">🔐 Authentication</div>
+                <ul>
+                    <li>4-digit PIN security</li>
+                    <li>Aadhaar / ABHA integration</li>
+                    <li>Auto-fill registration</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <div class="info-section-title">🏥 Services Available</div>
+                <ul>
+                    <li>Health Records Access</li>
+                    <li>Doctor Appointments</li>
+                    <li>Track Referral</li>
+                    <li>Medicine Reminders</li>
+                    <li>Insurance Information</li>
+                    <li>Hospital Locator</li>
+                </ul>
+            </div>
+
+            <div class="info-section">
+                <div class="info-section-title">📖 How to Use</div>
+                <ol>
+                    <li>Dial *123# and press Call</li>
+                    <li>Select your language (1-4)</li>
+                    <li>Enter your 4-digit PIN</li>
+                    <li>New users: Register with Aadhaar/ABHA</li>
+                    <li>Access healthcare services</li>
+                    <li>Use 0 to go back, # to confirm</li>
+                </ol>
+            </div>
+
+            <div class="info-section">
+                <div class="info-section-title">💳 Test Credentials</div>
+                <div class="test-credentials">
+                    <strong>Test PINs:</strong> 1234, 5678, 9012<br>
+                    <strong>📱 Test ID:</strong> Enter any 12 (Aadhaar) or 14 (ABHA) digits
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentScreen = 'welcome';
+        let dialedNumber = '';
+        let currentInput = '';
+        let userId = '';
+        let pinCode = '';
+        let confirmPinCode = '';
+        let selectedLanguage = '';
+        let userData = null;
+        let sessionActive = false;
+
+        const usersDB = [
+            {
+                name: 'Ramesh Kumar',
+                age: 32,
+                gender: 'Male',
+                bloodGroup: 'O+',
+                mobile: '+91 9876543210',
+                address: 'Mumbai, Maharashtra',
+                language: 'Hindi'
+            },
+            {
+                name: 'Priya Sharma',
+                age: 28,
+                gender: 'Female',
+                bloodGroup: 'A+',
+                mobile: '+91 9876543211',
+                address: 'Pune, Maharashtra',
+                language: 'Hindi'
+            },
+            {
+                name: 'Mohammed Ali',
+                age: 35,
+                gender: 'Male',
+                bloodGroup: 'B+',
+                mobile: '+91 9876543212',
+                address: 'Nagpur, Maharashtra',
+                language: 'Marathi'
+            },
+            {
+                name: 'Lakshmi Nair',
+                age: 45,
+                gender: 'Female',
+                bloodGroup: 'AB+',
+                mobile: '+91 9876543213',
+                address: 'Nashik, Maharashtra',
+                language: 'Marathi'
+            }
+        ];
+
+        const translations = {
+            'English': {
+                'mainMenu': 'Healthcare Services - Maharashtra',
+                'welcome': 'Welcome',
+                'healthRecords': 'My Health Records',
+                'healthRecordsDesc': 'View medical history & reports',
+                'bookAppointment': 'Book Appointment',
+                'bookAppointmentDesc': 'Schedule doctor consultation',
+                'emergency': 'Track Referral',
+                'emergencyDesc': 'Referral & follow-up Tracking',
+                'medicineReminders': 'Medicine Reminders',
+                'medicineRemindersDesc': 'Set medication alerts',
+                'insurance': 'Insurance Info',
+                'insuranceDesc': 'Check health coverage',
+                'findHospitals': 'Find Hospitals',
+                'findHospitalsDesc': 'Locate nearby facilities',
+                'selectService': 'Press 1-6 to select service',
+                'backConfirm': '0: Back | #: Confirm',
+                'patient': 'Patient',
+                'aadhaar': 'ID Number',
+                'bloodGroup': 'Blood Group',
+                'lastVisit': 'Last Visit',
+                'allergies': 'Allergies',
+                'chronic': 'Chronic',
+                'vaccinations': 'Vaccinations',
+                'upToDate': 'Up to date',
+                'recentConsultations': 'Recent Consultations',
+                'generalCheckup': 'General Checkup',
+                'bloodTest': 'Blood Test',
+                'none': 'None',
+                'availableDoctors': 'Available Doctors',
+                'specialty': 'Speciality',
+                'available': 'Available',
+                'slots': 'Slots',
+                'callToBook': 'to book appointment',
+                'emergencyHotlines': 'REFERRAL STATUS',
+                'ambulance': 'Referral To',
+                'police': 'Department',
+                'fire': 'Status',
+                'womenHelpline': 'Date',
+                'nearestHospital': 'Assigned Facility',
+                'distance': 'Distance',
+                'emergencyAvailable': 'Follow-up Required',
+                'activeMedications': 'Active Medications',
+                'dosage': 'Dosage',
+                'time': 'Time',
+                'duration': 'Duration',
+                'remaining': 'remaining',
+                'days': 'days',
+                'nextReminder': 'Next reminder at',
+                'smsReminders': 'SMS reminders will be sent to',
+                'policyHolder': 'Policy Holder',
+                'policyNo': 'Policy No',
+                'provider': 'Provider',
+                'status': 'Status',
+                'active': 'Active',
+                'coverageDetails': 'Coverage Details',
+                'totalCoverage': 'Total Coverage',
+                'usedAmount': 'Used Amount',
+                'availableAmount': 'Available',
+                'validUntil': 'Valid Until',
+                'cashless': 'Cashless',
+                'enabled': 'Enabled',
+                'networkHospitals': 'Network Hospitals',
+                'acrossKerala': 'across Maharashtra',
+                'hospitalsNear': 'Hospitals near',
+                'phone': 'Phone',
+                'allHospitalsAccept': 'All hospitals accept Maharashtra Health Insurance',
+                'pressBack': 'Press 0 to go back'
+            },
+            'Hindi': {
+                'mainMenu': 'स्वास्थ्य सेवाएं - महाराष्ट्र',
+                'welcome': 'स्वागत है',
+                'healthRecords': 'मेरे स्वास्थ्य रिकॉर्ड',
+                'healthRecordsDesc': 'चिकित्सा इतिहास और रिपोर्ट देखें',
+                'bookAppointment': 'अपॉइंटमेंट बुक करें',
+                'bookAppointmentDesc': 'डॉक्टर परामर्श निर्धारित करें',
+                'emergency': 'रेफरल ट्रैकिंग',
+                'emergencyDesc': 'रेफरल और फॉलो-अप ट्रैकिंग',
+                'medicineReminders': 'दवा रिमाइंडर',
+                'medicineRemindersDesc': 'दवा अलर्ट सेट करें',
+                'insurance': 'बीमा जानकारी',
+                'insuranceDesc': 'स्वास्थ्य कवरेज जांचें',
+                'findHospitals': 'अस्पताल खोजें',
+                'findHospitalsDesc': 'नजदीकी सुविधाएं खोजें',
+                'selectService': 'सेवा चुनने के लिए 1-6 दबाएं',
+                'backConfirm': '0: वापस | #: पुष्टि करें',
+                'patient': 'रोगी',
+                'aadhaar': 'पहचान संख्या',
+                'bloodGroup': 'रक्त समूह',
+                'lastVisit': 'अंतिम यात्रा',
+                'allergies': 'एलर्जी',
+                'chronic': 'पुरानी बीमारी',
+                'vaccinations': 'टीकाकरण',
+                'upToDate': 'अद्यतन',
+                'recentConsultations': 'हाल के परामर्श',
+                'generalCheckup': 'सामान्य जांच',
+                'bloodTest': 'रक्त परीक्षण',
+                'none': 'कोई नहीं',
+                'availableDoctors': 'उपलब्ध डॉक्टर',
+                'specialty': 'विशेषता',
+                'available': 'उपलब्ध',
+                'slots': 'स्लॉट',
+                'callToBook': 'अपॉइंटमेंट बुक करने के लिए कॉल करें',
+                'emergencyHotlines': 'रेफरल स्थिति',
+                'ambulance': 'संदर्भित',
+                'police': 'विभाग',
+                'fire': 'स्थिति',
+                'womenHelpline': 'तारीख',
+                'nearestHospital': 'आवंटित सुविधा',
+                'distance': 'दूरी',
+                'emergencyAvailable': 'फॉलो-अप आवश्यक',
+                'activeMedications': 'सक्रिय दवाएं',
+                'dosage': 'खुराक',
+                'time': 'समय',
+                'duration': 'अवधि',
+                'remaining': 'शेष',
+                'days': 'दिन',
+                'nextReminder': 'अगला रिमाइंडर',
+                'smsReminders': 'एसएमएस रिमाइंडर भेजे जाएंगे',
+                'policyHolder': 'पॉलिसी धारक',
+                'policyNo': 'पॉलिसी नंबर',
+                'provider': 'प्रदाता',
+                'status': 'स्थिति',
+                'active': 'सक्रिय',
+                'coverageDetails': 'कवरेज विवरण',
+                'totalCoverage': 'कुल कवरेज',
+                'usedAmount': 'उपयोग की गई राशि',
+                'availableAmount': 'उपलब्ध',
+                'validUntil': 'मान्य तक',
+                'cashless': 'कैशलेस',
+                'enabled': 'सक्षम',
+                'networkHospitals': 'नेटवर्क अस्पताल',
+                'acrossKerala': 'महाराष्ट्र में',
+                'hospitalsNear': 'अस्पताल निकट',
+                'phone': 'फोन',
+                'allHospitalsAccept': 'सभी अस्पताल महाराष्ट्र स्वास्थ्य बीमा स्वीकार करते हैं',
+                'pressBack': 'वापस जाने के लिए 0 दबाएं'
+            },
+            'Marathi': {
+                'mainMenu': 'आरोग्य सेवा - महाराष्ट्र',
+                'welcome': 'स्वागत आहे',
+                'healthRecords': 'माझे आरोग्य रेकॉर्ड',
+                'healthRecordsDesc': 'वैद्यकीय इतिहास आणि अहवाल पहा',
+                'bookAppointment': 'अपॉइंटमेंट बुक करा',
+                'bookAppointmentDesc': 'डॉक्टरांचा सल्ला घ्या',
+                'emergency': 'रेफरल ट्रॅकिंग',
+                'emergencyDesc': 'रेफरल आणि फॉलो-अप ट्रॅकिंग',
+                'medicineReminders': 'औषध स्मरणपत्रे',
+                'medicineRemindersDesc': 'औषध अलर्ट सेट करा',
+                'insurance': 'विमा माहिती',
+                'insuranceDesc': 'आरोग्य कव्हरेज तपासा',
+                'findHospitals': 'रुग्णालये शोधा',
+                'findHospitalsDesc': 'जवळपासच्या सुविधा शोधा',
+                'selectService': 'सेवा निवडण्यासाठी 1-6 दाबा',
+                'backConfirm': '0: मागे | #: पुष्टी करा',
+                'patient': 'रुग्ण',
+                'aadhaar': 'ओळख क्रमांक',
+                'bloodGroup': 'रक्तगट',
+                'lastVisit': 'शेवटची भेट',
+                'allergies': 'ऍलर्जी',
+                'chronic': 'जुनाट आजार',
+                'vaccinations': 'लसीकरण',
+                'upToDate': 'अद्ययावत',
+                'recentConsultations': 'अलीकडील सल्लामसलत',
+                'generalCheckup': 'सामान्य तपासणी',
+                'bloodTest': 'रक्त तपासणी',
+                'none': 'काहीही नाही',
+                'availableDoctors': 'उपलब्ध डॉक्टर',
+                'specialty': 'विशेषता',
+                'available': 'उपलब्ध',
+                'slots': 'वेळा',
+                'callToBook': 'अपॉइंटमेंट बुक करण्यासाठी कॉल करा',
+                'emergencyHotlines': 'रेफरल स्थिती',
+                'ambulance': 'संदर्भित',
+                'police': 'विभाग',
+                'fire': 'स्थिती',
+                'womenHelpline': 'तारीख',
+                'nearestHospital': 'नियुक्त सुविधा',
+                'distance': 'अंतर',
+                'emergencyAvailable': 'फॉलो-अप आवश्यक',
+                'activeMedications': 'सक्रिय औषधे',
+                'dosage': 'डोस',
+                'time': 'वेळ',
+                'duration': 'कालावधी',
+                'remaining': 'उर्वरित',
+                'days': 'दिवस',
+                'nextReminder': 'पुढील स्मरणपत्र',
+                'smsReminders': 'SMS स्मरणपत्रे पाठविली जातील',
+                'policyHolder': 'पॉलिसी धारक',
+                'policyNo': 'पॉलिसी क्रमांक',
+                'provider': 'प्रदाता',
+                'status': 'स्थिती',
+                'active': 'सक्रिय',
+                'coverageDetails': 'कव्हरेज तपशील',
+                'totalCoverage': 'एकूण कव्हरेज',
+                'usedAmount': 'वापरलेली रक्कम',
+                'availableAmount': 'उपलब्ध',
+                'validUntil': 'वैधता',
+                'cashless': 'कॅशलेस',
+                'enabled': 'सक्षम',
+                'networkHospitals': 'नेटवर्क रुग्णालये',
+                'acrossKerala': 'संपूर्ण महाराष्ट्रात',
+                'hospitalsNear': 'जवळपासची रुग्णालये',
+                'phone': 'फोन',
+                'allHospitalsAccept': 'सर्व रुग्णालये महाराष्ट्र आरोग्य विमा स्वीकारतात',
+                'pressBack': 'मागे जाण्यासाठी 0 दाबा'
+            },
+            'Tamil': {
+                'mainMenu': 'சுகாதார சேவைகள் - மகாராஷ்டிரா',
+                'welcome': 'வரவேற்பு',
+                'healthRecords': 'எனது சுகாதார பதிவுகள்',
+                'healthRecordsDesc': 'மருத்துவ வரலாறு & அறிக்கைகளைக் காணவும்',
+                'bookAppointment': 'சந்திப்பை பதிவு செய்யவும்',
+                'bookAppointmentDesc': 'மருத்துவர் ஆலோசனை திட்டமிடவும்',
+                'emergency': 'பரிந்துரை கண்காணிப்பு',
+                'emergencyDesc': 'பரிந்துரை மற்றும் பின்தொடர்தல்',
+                'medicineReminders': 'மருந்து நினைவூட்டல்கள்',
+                'medicineRemindersDesc': 'மருந்து எச்சரிக்கைகளை அமைக்கவும்',
+                'insurance': 'காப்பீட்டு தகவல்',
+                'insuranceDesc': 'சுகாதார கவரேஜை சரிபார்க்கவும்',
+                'findHospitals': 'மருத்துவமனைகளைக் கண்டறியவும்',
+                'findHospitalsDesc': 'அருகிலுள்ள வசதிகளைக் கண்டறியவும்',
+                'selectService': 'சேவையைத் தேர்ந்தெடுக்க 1-6 அழுத்தவும்',
+                'backConfirm': '0: பின் | #: உறுதிப்படுத்து',
+                'patient': 'நோயாளி',
+                'aadhaar': 'அடையாள எண்',
+                'bloodGroup': 'இரத்த வகை',
+                'lastVisit': 'கடைசி வருகை',
+                'allergies': 'ஒவ்வாமைகள்',
+                'chronic': 'நாள்பட்ட',
+                'vaccinations': 'தடுப்பூசிகள்',
+                'upToDate': 'புதுப்பிக்கப்பட்டது',
+                'recentConsultations': 'சமீபத்திய ஆலோசனைகள்',
+                'generalCheckup': 'பொது பரிசோதனை',
+                'bloodTest': 'இரத்த பரிசோதனை',
+                'none': 'இல்லை',
+                'availableDoctors': 'கிடைக்கக்கூடிய மருத்துவர்கள்',
+                'specialty': 'சிறப்பு',
+                'available': 'கிடைக்கும்',
+                'slots': 'ஸ்லாட்கள்',
+                'callToBook': 'சந்திப்பை பதிவு செய்ய அழைக்கவும்',
+                'emergencyHotlines': 'பரிந்துரை நிலை',
+                'ambulance': 'பரிந்துரைக்கப்பட்டது',
+                'police': 'துறை',
+                'fire': 'நிலை',
+                'womenHelpline': 'தேதி',
+                'nearestHospital': 'ஒதுக்கப்பட்ட வசதி',
+                'distance': 'தூரம்',
+                'emergencyAvailable': 'பின்தொடர்தல் தேவை',
+                'activeMedications': 'செயலில் உள்ள மருந்துகள்',
+                'dosage': 'டோஸேஜ்',
+                'time': 'நேரம்',
+                'duration': 'காலம்',
+                'remaining': 'எஞ்சியுள்ளது',
+                'days': 'நாட்கள்',
+                'nextReminder': 'அடுத்த நினைவூட்டல்',
+                'smsReminders': 'SMS நினைவூட்டல்கள் அனுப்பப்படும்',
+                'policyHolder': 'பாலிசி வைத்திருப்பவர்',
+                'policyNo': 'பாலிசி எண்',
+                'provider': 'வழங்குநர்',
+                'status': 'நிலை',
+                'active': 'செயலில்',
+                'coverageDetails': 'கவரேஜ் விவரங்கள்',
+                'totalCoverage': 'மொத்த கவரேஜ்',
+                'usedAmount': 'பயன்படுத்திய தொகை',
+                'availableAmount': 'கிடைக்கும்',
+                'validUntil': 'செல்லுபடியாகும்',
+                'cashless': 'பணமில்லா',
+                'enabled': 'இயக்கப்பட்டது',
+                'networkHospitals': 'நெட்வொர்க் மருத்துவமனைகள்',
+                'acrossKerala': 'மகாராஷ்டிரா முழுவதும்',
+                'hospitalsNear': 'மருத்துவமனைகள் அருகில்',
+                'phone': 'தொலைபேசி',
+                'allHospitalsAccept': 'அனைத்து மருத்துவமனைகளும் மகாராஷ்டிரா சுகாதார காப்பீட்டை ஏற்கின்றன',
+                'pressBack': 'திரும்ப செல்ல 0 அழுத்தவும்'
+            }
+        };
+
+        function init() {
+            showWelcomeScreen();
+            updateClock();
+            setInterval(updateClock, 60000);
+            
+            document.addEventListener('keydown', handleKeyboard);
+        }
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours();
+            const minutes = now.getMinutes();
+            const ampm = hours >= 12 ? 'PM' : 'AM';
+            const displayHours = hours % 12 || 12;
+            const displayMinutes = minutes < 10 ? '0' + minutes : minutes;
+            document.getElementById('clock').textContent = `${displayHours}:${displayMinutes} ${ampm}`;
+        }
+
+        function handleKeyboard(e) {
+            if (e.key >= '0' && e.key <= '9') {
+                inputDigit(e.key);
+            } else if (e.key === '*' || e.key === '#') {
+                inputDigit(e.key);
+            } else if (e.key === 'Backspace') {
+                backspaceInput();
+            } else if (e.key === 'Enter') {
+                inputDigit('#');
+            }
+        }
+
+        function showScreen(html) {
+            document.getElementById('screenContent').innerHTML = html;
+            document.getElementById('screen').scrollTop = 0;
+        }
+
+        function showWelcomeScreen() {
+            currentScreen = 'welcome';
+            dialedNumber = '';
+            currentInput = '';
+            sessionActive = false;
+            document.getElementById('secondaryButtons').classList.remove('active');
+            
+            showScreen(`
+                <div class="screen-title">USSD Healthcare Services</div>
+                <div class="screen-subtitle">महाराष्ट्र आरोग्य सेवा</div>
+               <br>
+                <div style="text-align: center;">
+                    Dial *123# to access<br>
+                    Healthcare services for<br>
+                    Rural & Underserved Communities<br><br>
+                    <span class="info-text" style="font-size: 24px;">*123#</span>
+                </div>
+                <br>
+                <div style="text-align: center;">
+                    <span class="success-text">✅ 4 Languages Support</span><br>
+                    <span class="success-text">✅ Aadhaar/ABHA Integration</span><br>
+                    <span class="success-text">✅ No Internet Required</span>
+                </div>
+            `);
+        }
+
+        function inputDigit(digit) {
+            if (!sessionActive && currentScreen === 'welcome') {
+                dialedNumber += digit;
+                showScreen(`
+                    <div class="screen-title">USSD Healthcare Services</div>
+                    <br>
+                    <div style="text-align: center;">
+                        <span class="white-text" style="font-size: 20px;">${dialedNumber}</span>
+                        <span class="cursor"></span>
+                    </div>
+                    <br>
+                    <div style="text-align: center; color: #666;">
+                        Press Call to dial
+                    </div>
+                `);
+                return;
+            }
+
+            if (currentScreen === 'aadhaar') {
+                if (digit === '#') {
+                    if (currentInput.length === 12 || currentInput.length === 14) {
+                        verifyAadhaar();
+                    }
+                } else if (digit >= '0' && digit <= '9') {
+                    if (currentInput.length < 14) {
+                        currentInput += digit;
+                        updateAadhaarScreen();
+                    }
+                }
+            } else if (currentScreen === 'pin') {
+                if (digit === '#') {
+                    if (currentInput.length === 4) {
+                        pinCode = currentInput;
+                        currentInput = '';
+                        showConfirmPinScreen();
+                    }
+                } else if (digit >= '0' && digit <= '9') {
+                    if (currentInput.length < 4) {
+                        currentInput += digit;
+                        updatePinScreen();
+                    }
+                }
+            } else if (currentScreen === 'confirmPin') {
+                if (digit === '#') {
+                    if (currentInput.length === 4) {
+                        confirmPinCode = currentInput;
+                        verifyPinMatch();
+                    }
+                } else if (digit >= '0' && digit <= '9') {
+                    if (currentInput.length < 4) {
+                        currentInput += digit;
+                        updateConfirmPinScreen();
+                    }
+                }
+            } else if (currentScreen === 'language') {
+                if (digit === '#' && currentInput) {
+                    selectLanguage(currentInput);
+                } else if (digit >= '1' && digit <= '4') {
+                    currentInput = digit;
+                    updateLanguageScreen();
+                }
+            } else if (currentScreen === 'mainMenu') {
+                if (digit === '#' && currentInput) {
+                    selectService(currentInput);
+                } else if (digit >= '1' && digit <= '6') {
+                    currentInput = digit;
+                    updateMainMenuScreen();
+                } else if (digit === '0') {
+                    showLanguageScreen();
+                }
+            } else if (currentScreen.startsWith('service')) {
+                if (digit === '0') {
+                    showMainMenu();
+                }
+            }
+        }
+
+        function backspaceInput() {
+            if (currentInput.length > 0) {
+                currentInput = currentInput.slice(0, -1);
+                if (currentScreen === 'aadhaar') updateAadhaarScreen();
+                else if (currentScreen === 'pin') updatePinScreen();
+                else if (currentScreen === 'confirmPin') updateConfirmPinScreen();
+            }
+        }
+
+        function callAction() {
+            if (dialedNumber === '*123#' && !sessionActive) {
+                sessionActive = true;
+                document.getElementById('secondaryButtons').classList.add('active');
+                showLoading('Connecting...');
+                setTimeout(() => {
+                    showAadhaarScreen();
+                }, 1500);
+            }
+        }
+
+        function endAction() {
+            showWelcomeScreen();
+        }
+
+        function replyAction() {
+            inputDigit('#');
+        }
+
+        function backAction() {
+            if (currentScreen === 'mainMenu') {
+                showLanguageScreen();
+            } else if (currentScreen.startsWith('service')) {
+                showMainMenu();
+            } else if (currentScreen === 'aadhaar' || currentScreen === 'pin' || currentScreen === 'confirmPin') {
+                backspaceInput();
+            }
+        }
+
+        function cancelAction() {
+            endAction();
+        }
+
+        function showLoading(message) {
+            showScreen(`
+                <div class="loading">
+                    <div class="spinner"></div>
+                    <div>${message}</div>
+                </div>
+            `);
+        }
+
+        function showAadhaarScreen() {
+            currentScreen = 'aadhaar';
+            currentInput = '';
+            updateAadhaarScreen();
+        }
+
+        function updateAadhaarScreen() {
+            showScreen(`
+                <div class="screen-title">🆔 Register Profile</div>
+                <br>
+                <div>Enter your 12-digit Aadhaar<br>or 14-digit ABHA ID:</div>
+                <br>
+                <div class="input-field">${currentInput}<span class="cursor"></span></div>
+                <div class="input-counter">(${currentInput.length} digits entered)</div>
+                <br>
+                <div class="test-info">
+                    <strong>Test Mode:</strong><br>
+                    Enter ANY 12 or 14 digit number to proceed.
+              <strong>Test Aadhaar Numbers:</strong><br>
+                    123456789012 - Ramesh Kumar<br>
+                    234567890123 - Priya Sharma<br>
+                    345678901234 - Mohammed Ali<br>
+                    456789012345 - Lakshmi Nair
+                </div>
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    Press # to submit
+                </div>
+            `);
+        }
+
+        function verifyAadhaar() {
+            userId = currentInput;
+            const index = userId.length > 0 ? (parseInt(userId.charAt(userId.length - 1)) || 0) % usersDB.length : 0;
+            userData = usersDB[index];
+            
+            showLoading('Verifying Identity...');
+            setTimeout(() => {
+                showAadhaarVerifiedScreen();
+            }, 1500);
+        }
+
+        function showAadhaarVerifiedScreen() {
+            showScreen(`
+                <div class="screen-title">✅ Identity Verified!</div>
+                <br>
+                <div class="info-text">Auto-filled Details:</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <div class="details-box">
+                    <div class="detail-row">
+                        <span class="detail-label">Name:</span>
+                        <span class="detail-value">${userData.name}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Age:</span>
+                        <span class="detail-value">${userData.age} years</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Gender:</span>
+                        <span class="detail-value">${userData.gender}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Blood Group:</span>
+                        <span class="detail-value">${userData.bloodGroup}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Mobile:</span>
+                        <span class="detail-value">${userData.mobile}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">Address:</span>
+                        <span class="detail-value">${userData.address}</span>
+                    </div>
+                </div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+            `);
+            setTimeout(() => {
+                currentInput = '';
+                showPinScreen();
+            }, 3000);
+        }
+
+        function showPinScreen() {
+            currentScreen = 'pin';
+            currentInput = '';
+            updatePinScreen();
+        }
+
+        function updatePinScreen() {
+            const displayPin = '●'.repeat(currentInput.length) + '_'.repeat(4 - currentInput.length);
+            showScreen(`
+                <div class="screen-title">Now create a 4-digit PIN</div>
+                <div class="screen-title">for secure access:</div>
+                <br>
+                <div>🔐 Enter 4-digit PIN:</div>
+                <br>
+                <div class="pin-display">${displayPin.split('').join(' ')}</div>
+                <div class="input-counter" style="text-align: center;">(${currentInput.length}/4 digits entered)</div>
+                <br>
+                <div style="text-align: center;">
+                    This PIN will be used for<br>
+                    future login
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    Press # to submit
+                </div>
+            `);
+        }
+
+        function showConfirmPinScreen() {
+            currentScreen = 'confirmPin';
+            currentInput = '';
+            showLoading('Setting up PIN...');
+            setTimeout(() => {
+                updateConfirmPinScreen();
+            }, 1000);
+        }
+
+        function updateConfirmPinScreen() {
+            const displayPin = '●'.repeat(currentInput.length) + '_'.repeat(4 - currentInput.length);
+            showScreen(`
+                <div class="screen-title">✅ PIN Created Successfully!</div>
+                <br>
+                <div>Re-enter PIN to confirm:</div>
+                <br>
+                <div>🔐 Confirm 4-digit PIN:</div>
+                <br>
+                <div class="pin-display">${displayPin.split('').join(' ')}</div>
+                <div class="input-counter" style="text-align: center;">(${currentInput.length}/4 digits entered)</div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    Press # to submit
+                </div>
+            `);
+        }
+
+        function verifyPinMatch() {
+            if (pinCode === confirmPinCode) {
+                showLoading('Confirming...');
+                setTimeout(() => {
+                    showRegistrationComplete();
+                }, 1000);
+            } else {
+                showScreen(`
+                    <div class="screen-title">❌ PIN Mismatch</div>
+                    <br>
+                    <div class="error-text">
+                        The PINs you entered<br>
+                        do not match.
+                    </div>
+                    <br>
+                    <div>Please try again.</div>
+                    <br>
+                    <div style="text-align: center;">
+                        Press any key to retry
+                    </div>
+                `);
+                setTimeout(() => {
+                    currentInput = '';
+                    pinCode = '';
+                    showPinScreen();
+                }, 2000);
+            }
+        }
+
+        function showRegistrationComplete() {
+            showScreen(`
+                <div class="screen-title">✅ Registration Complete!</div>
+                <br>
+                <div class="success-text" style="text-align: center; font-size: 16px;">
+                    Welcome, ${userData.name}!
+                </div>
+                <br>
+                <div style="text-align: center;">
+                    Your account is ready.
+                </div>
+                <br><br>
+                <div style="text-align: center; color: #666;">
+                    Press any key to continue...
+                </div>
+            `);
+            setTimeout(() => {
+                showLanguageScreen();
+            }, 2000);
+        }
+
+        function showLanguageScreen() {
+            currentScreen = 'language';
+            currentInput = '';
+            updateLanguageScreen();
+        }
+
+        function updateLanguageScreen() {
+            const selected = currentInput;
+            showScreen(`
+                <div class="screen-title">🌐 Select Language</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="menu-item" style="${selected === '1' ? 'border-left-color: #fbbf24;' : ''}">
+                    1. English
+                </div>
+                <div class="menu-item" style="${selected === '2' ? 'border-left-color: #fbbf24;' : ''}">
+                    2. हिंदी (Hindi)
+                </div>
+                <div class="menu-item" style="${selected === '3' ? 'border-left-color: #fbbf24;' : ''}">
+                    3. मराठी (Marathi)
+                </div>
+                <div class="menu-item" style="${selected === '4' ? 'border-left-color: #fbbf24;' : ''}">
+                    4. தமிழ் (Tamil)
+                </div>
+                <br>
+                <div style="text-align: center;">
+                    ${selected ? `<span class="info-text">Selected: ${selected}</span><br>` : ''}
+                    <span style="color: #666;">Press number (1-4) then #</span>
+                </div>
+            `);
+        }
+
+        function selectLanguage(choice) {
+            const languages = ['', 'English', 'Hindi', 'Marathi', 'Tamil'];
+            selectedLanguage = languages[choice];
+            currentInput = '';
+            showMainMenu();
+        }
+
+        function showMainMenu() {
+            currentScreen = 'mainMenu';
+            currentInput = '';
+            updateMainMenuScreen();
+        }
+
+        function updateMainMenuScreen() {
+            const selected = currentInput;
+            const t = translations[selectedLanguage] || translations['English'];
+            
+            showScreen(`
+                <div class="screen-title">${t['mainMenu']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div style="text-align: center;">
+                    <span class="info-text">${t['welcome']}, ${userData.name}!</span><br>
+                    <span style="font-size: 12px;">Mobile: ${userData.mobile}</span>
+                </div>
+                <br>
+                <div class="menu-item" style="${selected === '1' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>1. ${t['healthRecords']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['healthRecordsDesc']}</span>
+                </div>
+                <div class="menu-item" style="${selected === '2' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>2. ${t['bookAppointment']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['bookAppointmentDesc']}</span>
+                </div>
+                <div class="menu-item" style="${selected === '3' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>3. ${t['emergency']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['emergencyDesc']}</span>
+                </div>
+                <div class="menu-item" style="${selected === '4' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>4. ${t['medicineReminders']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['medicineRemindersDesc']}</span>
+                </div>
+                <div class="menu-item" style="${selected === '5' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>5. ${t['insurance']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['insuranceDesc']}</span>
+                </div>
+                <div class="menu-item" style="${selected === '6' ? 'border-left-color: #fbbf24;' : ''}">
+                    <strong>6. ${t['findHospitals']}</strong><br>
+                    <span style="font-size: 12px; color: #666;">${t['findHospitalsDesc']}</span>
+                </div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <div style="text-align: center; font-size: 12px;">
+                    ${selected ? `<span class="info-text">${t['selectService'].replace('Press 1-6 to select service', selected)}</span><br>` : ''}
+                    <span style="color: #666;">${t['selectService']}<br>${t['backConfirm']}</span>
+                </div>
+            `);
+        }
+
+        function selectService(choice) {
+            currentInput = '';
+            const services = {
+                '1': showHealthRecords,
+                '2': showBookAppointment,
+                '3': showReferralTracking,
+                '4': showMedicineReminders,
+                '5': showInsuranceInfo,
+                '6': showFindHospitals
+            };
+            
+            if (services[choice]) {
+                services[choice]();
+            }
+        }
+
+        function showHealthRecords() {
+            currentScreen = 'service1';
+            const t = translations[selectedLanguage] || translations['English'];
+            showScreen(`
+                <div class="screen-title">📋 ${t['healthRecords']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="details-box">
+                    <div class="detail-row">
+                        <span class="detail-label">${t['patient']}:</span>
+                        <span class="detail-value">${userData.name}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">${t['aadhaar']}:</span>
+                        <span class="detail-value">XXXX-XXXX-${userId.slice(-4)}</span>
+                    </div>
+                </div>
+                <br>
+                <div class="detail-row">
+                    <span>${t['bloodGroup']}:</span>
+                    <span class="white-text">${userData.bloodGroup}</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['lastVisit']}:</span>
+                    <span class="white-text">15-Oct-2024</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['allergies']}:</span>
+                    <span class="success-text">${t['none']}</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['chronic']}:</span>
+                    <span class="success-text">${t['none']}</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['vaccinations']}:</span>
+                    <span class="success-text">✅ ${t['upToDate']}</span>
+                </div>
+                <br>
+                <div class="info-text">${t['recentConsultations']}:</div>
+                <div class="menu-item">
+                    • 15-Oct-2024 - Dr. Sharma<br>
+                    <span style="font-size: 12px;">  ${t['generalCheckup']}</span>
+                </div>
+                <div class="menu-item">
+                    • 10-Sep-2024 - Dr. Nair<br>
+                    <span style="font-size: 12px;">  ${t['bloodTest']}</span>
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        function showBookAppointment() {
+            currentScreen = 'service2';
+            const t = translations[selectedLanguage] || translations['English'];
+            
+            const specialties = {
+                'English': ['General Physician', 'Cardiologist', 'Pediatrician'],
+                'Hindi': ['सामान्य चिकित्सक', 'हृदय रोग विशेषज्ञ', 'बाल रोग विशेषज्ञ'],
+                'Marathi': ['सामान्य चिकित्सक', 'हृदयरोगतज्ज्ञ', 'बालरोगतज्ज्ञ'],
+                'Tamil': ['பொது மருத்துவர்', 'இதய நிபுணர்', 'குழந்தை மருத்துவர்']
+            };
+            
+            const specs = specialties[selectedLanguage] || specialties['English'];
+            
+            showScreen(`
+                <div class="screen-title">📅 ${t['bookAppointment']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="info-text">${t['availableDoctors']}:</div>
+                <br>
+                <div class="menu-item">
+                    <strong>Dr. Anjali Sharma</strong><br>
+                    <span style="font-size: 12px;">${t['specialty']}: ${specs[0]}</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['available']}: Mon, Wed, Fri</span><br>
+                    <span style="font-size: 12px;">${t['slots']}: 10AM-12PM, 3PM-5PM</span>
+                </div>
+                <div class="menu-item">
+                    <strong>Dr. Rajesh Kumar</strong><br>
+                    <span style="font-size: 12px;">${t['specialty']}: ${specs[1]}</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['available']}: Tue, Thu, Sat</span><br>
+                    <span style="font-size: 12px;">${t['slots']}: 9AM-11AM, 2PM-4PM</span>
+                </div>
+                <div class="menu-item">
+                    <strong>Dr. Priya Menon</strong><br>
+                    <span style="font-size: 12px;">${t['specialty']}: ${specs[2]}</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['available']}: Mon-Sat</span><br>
+                    <span style="font-size: 12px;">${t['slots']}: 11AM-1PM, 4PM-6PM</span>
+                </div>
+                <br>
+                <div class="success-text" style="text-align: center;">
+                    Call ${userData.mobile}<br>
+                    ${t['callToBook']}
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        function showReferralTracking() {
+            currentScreen = 'service3';
+            const t = translations[selectedLanguage] || translations['English'];
+            showScreen(`
+                <div class="screen-title">📍 ${t['emergency']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="info-text" style="text-align: center; font-size: 16px;">
+                    📋 ${t['emergencyHotlines']}
+                </div>
+                <br>
+                <div class="details-box">
+                    <div class="detail-row">
+                        <span class="detail-label">🏥 ${t['ambulance']}:</span>
+                        <span class="white-text" style="font-size: 14px;">KEM Hospital, Mumbai</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">⚕️ ${t['police']}:</span>
+                        <span class="white-text" style="font-size: 14px;">Cardiology</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📝 ${t['fire']}:</span>
+                        <span class="success-text" style="font-size: 14px;">Approved</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">📅 ${t['womenHelpline']}:</span>
+                        <span class="white-text" style="font-size: 14px;">20-Oct-2024</span>
+                    </div>
+                </div>
+                <br>
+                <div class="info-text">${t['nearestHospital']}:</div>
+                <div class="menu-item">
+                    <strong>Sion Hospital (LTMGH)</strong><br>
+                    <span style="font-size: 12px;">${userData.address}</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['distance']}: 4.5 km</span><br>
+                    <span style="font-size: 12px;">${t['emergencyAvailable']}</span>
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        function showMedicineReminders() {
+            currentScreen = 'service4';
+            const t = translations[selectedLanguage] || translations['English'];
+            showScreen(`
+                <div class="screen-title">💊 ${t['medicineReminders']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="info-text">${t['activeMedications']}:</div>
+                <br>
+                <div class="menu-item">
+                    <strong>Paracetamol 500mg</strong><br>
+                    <span style="font-size: 12px;">${t['dosage']}: 1 tablet, twice daily</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['time']}: 9:00 AM, 9:00 PM</span><br>
+                    <span style="font-size: 12px;">${t['duration']}: 5 ${t['days']} (3 ${t['remaining']})</span>
+                </div>
+                <div class="menu-item">
+                    <strong>Vitamin D3</strong><br>
+                    <span style="font-size: 12px;">${t['dosage']}: 1 capsule, once daily</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['time']}: 10:00 AM</span><br>
+                    <span style="font-size: 12px;">${t['duration']}: 30 ${t['days']} (22 ${t['remaining']})</span>
+                </div>
+                <br>
+                <div class="success-text" style="text-align: center;">
+                    ✅ ${t['nextReminder']} 9:00 PM<br>
+                    Paracetamol
+                </div>
+                <br>
+                <div style="font-size: 12px; text-align: center;">
+                    ${t['smsReminders']}<br>
+                    ${userData.mobile}
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        function showInsuranceInfo() {
+            currentScreen = 'service5';
+            const t = translations[selectedLanguage] || translations['English'];
+            showScreen(`
+                <div class="screen-title">🛡️ ${t['insurance']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="details-box">
+                    <div class="detail-row">
+                        <span class="detail-label">${t['policyHolder']}:</span>
+                        <span class="detail-value">${userData.name}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">${t['policyNo']}:</span>
+                        <span class="detail-value">MH${userId.slice(-8)}</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">${t['provider']}:</span>
+                        <span class="detail-value">Maharashtra Health Scheme</span>
+                    </div>
+                    <div class="detail-row">
+                        <span class="detail-label">${t['status']}:</span>
+                        <span class="success-text">✅ ${t['active']}</span>
+                    </div>
+                </div>
+                <br>
+                <div class="info-text">${t['coverageDetails']}:</div>
+                <br>
+                <div class="detail-row">
+                    <span>${t['totalCoverage']}:</span>
+                    <span class="white-text">₹5,00,000</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['usedAmount']}:</span>
+                    <span class="white-text">₹25,000</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['availableAmount']}:</span>
+                    <span class="success-text">₹4,75,000</span>
+                </div>
+                <br>
+                <div class="detail-row">
+                    <span>${t['validUntil']}:</span>
+                    <span class="white-text">31-Dec-2025</span>
+                </div>
+                <div class="detail-row">
+                    <span>${t['cashless']}:</span>
+                    <span class="success-text">✅ ${t['enabled']}</span>
+                </div>
+                <br>
+                <div style="font-size: 12px; text-align: center;">
+                    ${t['networkHospitals']}: 150+<br>
+                    ${t['acrossKerala']}
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        function showFindHospitals() {
+            currentScreen = 'service6';
+            const t = translations[selectedLanguage] || translations['English'];
+            showScreen(`
+                <div class="screen-title">🏥 ${t['findHospitals']}</div>
+                <div class="divider">━━━━━━━━━━━━━━━━━━━━</div>
+                <br>
+                <div class="info-text">${t['hospitalsNear']} ${userData.address}:</div>
+                <br>
+                <div class="menu-item">
+                    <strong>KEM Hospital</strong><br>
+                    <span style="font-size: 12px;">Mumbai</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['distance']}: 2.5 km</span><br>
+                    <span style="font-size: 12px;">ICU: ✅ | OPD: ✅</span><br>
+                    <span style="font-size: 12px;">${t['phone']}: 022-24107000</span>
+                </div>
+                <div class="menu-item">
+                    <strong>Sassoon General Hospital</strong><br>
+                    <span style="font-size: 12px;">Pune</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['distance']}: 3.2 km</span><br>
+                    <span style="font-size: 12px;">ICU: ✅ | OPD: ✅</span><br>
+                    <span style="font-size: 12px;">${t['phone']}: 020-26128000</span>
+                </div>
+                <div class="menu-item">
+                    <strong>JJ Hospital</strong><br>
+                    <span style="font-size: 12px;">Mumbai</span><br>
+                    <span style="font-size: 12px; color: #fbbf24;">${t['distance']}: 4.0 km</span><br>
+                    <span style="font-size: 12px;">ICU: ✅ | OPD: ✅</span><br>
+                    <span style="font-size: 12px;">${t['phone']}: 022-23735555</span>
+                </div>
+                <br>
+                <div class="success-text" style="text-align: center; font-size: 12px;">
+                    ${t['allHospitalsAccept']}
+                </div>
+                <br>
+                <div style="text-align: center; color: #666;">
+                    ${t['pressBack']}
+                </div>
+            `);
+        }
+
+        init();
+    </script>
+</body>
+</html>
 
